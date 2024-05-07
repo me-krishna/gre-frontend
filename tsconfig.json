@@ -22,6 +22,24 @@
     /* Alias */
     "baseUrl": ".",
     "paths": {
+      "@components/*": [
+        "./src/components/*"
+      ],
+      "@pages/*": [
+        "./src/pages/*"
+      ],
+      "@styles/*": [
+        "./src/styles/*"
+      ],
+      "@utils/*": [
+        "./src/utils/*"
+      ],
+      "@services/*": [
+        "./src/services/*"
+      ],
+      "@lib/*": [
+        "./src/lib/*"
+      ],
       "@/*": [
         "./src/*"
       ],

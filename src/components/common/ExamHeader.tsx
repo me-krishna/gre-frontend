@@ -97,8 +97,8 @@ const ExamHeader: React.FC<Props> = ({ testName, step }) => {
               className="flex items-center space-x-3 rtl:space-x-reverse"
             >
               <img
-                src="/images/logo.png"
-                className="h-[50px]"
+                src="/images/logos/logo.png"
+                className="h-[50px] w-1/2 md:w-1/4"
                 alt="Dr Raju's Education Academy Logo"
               />
             </Link>

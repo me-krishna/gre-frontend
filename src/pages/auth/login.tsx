@@ -1,7 +1,12 @@
-import { FormEvent, useState } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import useApi from "../../lib/api";
+import { error } from "../../lib/notify";
+import { useNavigate } from "react-router-dom";
+import { AxiosError } from "axios";
+import { encryptData } from "../../lib/crypt";
 
 const schema = z.object({
   email: z.string().email(),
@@ -11,6 +16,8 @@ const schema = z.object({
 type TSchema = z.infer<typeof schema>;
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -22,13 +29,48 @@ const Login = () => {
 
   const [isSubmit, setIsSubmit] = useState(false);
 
-  const onLogin = async () => {
-    // const res = await  api
+  const onLogin = async (e: TSchema) => {
+    try {
+      const res = await useApi.post("/auth/login", {
+        email: e.email,
+        password: e.password,
+        type: "student",
+      });
+      const { data, status } = res;
+      if (status === 200) {
+        localStorage.setItem(process.env.REACT_APP_TOKEN_KEY, data.data.token);
+        console.log(encryptData(data.data.token));
+        localStorage.setItem(
+          process.env.REACT_APP_USER_KEY,
+          encryptData(data.data.user)
+        );
+        navigate("/");
+      } else {
+        error(data.data.message);
+      }
+    } catch (err) {
+      error(
+        err instanceof AxiosError
+          ? err.response?.data.message
+          : err instanceof Error
+          ? err.message
+          : "An error occurred"
+      );
+    }
   };
 
-  const onSubmit = (e: TSchema) => {
+  useEffect(() => {
+    document.title = "Student Login";
+    const token = localStorage.getItem(process.env.REACT_APP_TOKEN_KEY);
+    if (token) {
+      navigate("/");
+    }
+  }, []);
+
+  const onSubmit = async (e: TSchema) => {
     setIsSubmit(true);
-    console.log(e);
+    await onLogin(e);
+    setIsSubmit(false);
   };
 
   return (
