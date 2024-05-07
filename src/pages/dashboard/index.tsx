@@ -44,7 +44,7 @@ const Dashboard: React.FC = () => {
       <div className="w-screen">
         <div className="flex justify-center items-center py-5 ">
           <div className="overflow-x-auto">
-            <h1 className="text-3xl font-semibold text-gray-500 dark:text-white mb-3">
+            <h1 className="text-3xl font-semibold text-p1-900 mb-3">
               Total Tests
             </h1>
             {tests.length > 0 && (
