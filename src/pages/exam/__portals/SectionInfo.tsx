@@ -1,7 +1,7 @@
 const SectionInfo = () => {
   return (
     <div>
-      <h3 className="font-bold text-3xl">GENERAL INFORMATION</h3>
+      <h3 className="font-bold text-3xl">Section INFORMATION</h3>
       <div>
         <p className="font-bold text-xlg">Timing and Break</p>
         <p className="text-justify">

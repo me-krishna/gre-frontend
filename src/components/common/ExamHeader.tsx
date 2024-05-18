@@ -18,6 +18,9 @@ const ExamHeader: React.FC<Props> = ({ testName, step }) => {
   } = {
     "1": [9],
     "2": [2, 5, 9],
+    "3": [2, 5, 9],
+    "4": [2, 5, 9],
+    "5": [2, 5, 9],
   };
   const [showBtns, setShowBtns] = useState<number[]>(
     buttonsshowData[step.toString()]
@@ -92,7 +95,7 @@ const ExamHeader: React.FC<Props> = ({ testName, step }) => {
       <nav>
         <div className="flex flex-wrap items-center justify-between mx-auto py-1 px-2">
           <div className="flex items-center justify-center gap-3">
-            <Link
+            {/* <Link
               to="/"
               className="flex items-center space-x-3 rtl:space-x-reverse"
             >
@@ -101,7 +104,7 @@ const ExamHeader: React.FC<Props> = ({ testName, step }) => {
                 className="h-[50px] w-1/2 md:w-1/4"
                 alt="Dr Raju's Education Academy Logo"
               />
-            </Link>
+            </Link> */}
             <h2 className="capitalize text-white font-bold">{testName}</h2>
           </div>
           <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse gap-2">

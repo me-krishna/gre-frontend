@@ -31,7 +31,7 @@ const Login = () => {
 
   const onLogin = async (e: TSchema) => {
     try {
-      const res = await useApi.post("/auth/login", {
+      const res = await useApi.post("/login", {
         email: e.email,
         password: e.password,
         type: "student",
@@ -39,7 +39,6 @@ const Login = () => {
       const { data, status } = res;
       if (status === 200) {
         localStorage.setItem(process.env.REACT_APP_TOKEN_KEY, data.data.token);
-        console.log(encryptData(data.data.token));
         localStorage.setItem(
           process.env.REACT_APP_USER_KEY,
           encryptData(data.data.user)
