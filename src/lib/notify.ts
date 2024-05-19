@@ -16,3 +16,9 @@ export const error = (message: string) => {
     position: "top-right",
   })
 }
+export const info = (message: string) => {
+  toast.info(message, {
+    ...congig,
+    position: "top-right",
+  })
+}

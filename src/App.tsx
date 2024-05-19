@@ -12,7 +12,7 @@ function App() {
       <Routes>
         <Route element={<PriavateRoute />}>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/gretest/:examName" element={<Exam />} />
+          <Route path="/gretest/:exam_section_id" element={<Exam />} />
         </Route>
         <Route path="/login" element={<Login />} />
       </Routes>

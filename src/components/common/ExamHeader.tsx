@@ -7,6 +7,7 @@ import { BsQuestion } from "react-icons/bs";
 
 import ExamButton from "../ui/ExamButton";
 import { useState } from "react";
+import { v4 } from "uuid";
 interface Props {
   testName: string;
   step: number;
@@ -109,7 +110,7 @@ const ExamHeader: React.FC<Props> = ({ testName, step }) => {
           </div>
           <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse gap-2">
             {activatedBtns.map((btn, index) => (
-              <ExamButton name={btn.name} icon={btn.icon} />
+              <ExamButton key={v4()} name={btn.name} icon={btn.icon} />
             ))}
           </div>
         </div>
