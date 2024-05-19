@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 
 interface PassageNoQuestionProps {
-  question: string;
+  question: any;
   getAnswer: (answer: string) => void;
 }
 
@@ -10,7 +10,7 @@ const PassageNoQuestion: FC<PassageNoQuestionProps> = ({
   getAnswer,
 }) => {
   const [ans, setAns] = useState<string>("");
-
+  console.log(question, "component");
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setAns(e.target.value);
     getAnswer(e.target.value);
@@ -20,8 +20,8 @@ const PassageNoQuestion: FC<PassageNoQuestionProps> = ({
   return (
     <div className="flex justify-center items-start w-full px-2 sm:px-10 md:px-28 gap-3">
       <div
-        className="text-sm w-1/2 text-justify p-2"
-        dangerouslySetInnerHTML={{ __html: question }}
+        className="text-sm w-1/2 text-justify p-2 border h-auto min-h-[435px] border-[#6c757d] rounded-tl rounded-bl"
+        dangerouslySetInnerHTML={{ __html: question.passage }}
       ></div>
       <div className="w-1/2 p-1">
         <div className="flex justify-start items-center gap-2 bg-[#6c757d] w-full p-2 rounded-t">
@@ -42,7 +42,7 @@ const PassageNoQuestion: FC<PassageNoQuestionProps> = ({
           onChange={handleChange}
           value={ans}
           rows={25}
-          className="h-96 w-full"
+          className="h-96 w-full text-[#393939]"
         ></textarea>
       </div>
     </div>

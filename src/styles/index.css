@@ -7,3 +7,11 @@
     font-family: Futura, 'Century Gothic', AppleGothic, sans-serif
   }
 }
+
+table,
+th,
+td {
+  border: 1px solid;
+  padding: 2px;
+  border-collapse: collapse;
+}
