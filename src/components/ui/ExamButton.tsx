@@ -6,6 +6,7 @@ interface Props {
   onClick?: () => void;
   icon: JSX.Element;
   disabled?: boolean;
+  style?: React.CSSProperties;
 }
 
 const ExamButton: FC<Props> = ({
@@ -14,12 +15,14 @@ const ExamButton: FC<Props> = ({
   disabled = false,
   onClick,
   icon,
+  style,
 }) => {
   return (
     <button
       disabled={disabled}
-      className={`border py-1 px-2 rounded text-[12px] text-white border-white flex flex-col justify-center items-center font-semibold hover:border-slate-200 hover:text-slate-200 ${className}`}
+      className={`border py-1 px-2 rounded text-[14px] text-white border-white h-[56px] min-w-[62px] flex flex-col justify-center items-center hover:border-slate-200 hover:text-slate-200 ${className}`}
       onClick={onClick && onClick}
+      style={style || {}}
     >
       {name}
       {icon}

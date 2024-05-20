@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { CiCircleMinus, CiCirclePlus } from "react-icons/ci";
+import { CiCircleMinus } from "react-icons/ci";
 import { useTimer } from "react-timer-hook";
-
+import { IoTimeOutline } from "react-icons/io5";
 const SectionHeading = ({
   currentSection,
   totalSections,
@@ -22,10 +22,11 @@ const SectionHeading = ({
   const { seconds, minutes, hours } = useTimer({
     expiryTimestamp: time,
     onExpire: () => console.warn("onExpire called"),
+
   });
 
   return (
-    <div className="bg-[#ffcccc] px-3 py1 flex justify-between items-center">
+    <div className="bg-[#f0e1e4] px-3 py1 flex justify-between items-center border-y border-t-2 border-t-[#882f5c] border-b-[#b4b4b4]">
       <div>
         <span className=" font-extrabold">
           {" "}
@@ -53,7 +54,7 @@ const SectionHeading = ({
           ) : (
             <>
               {" "}
-              <CiCirclePlus /> Show Time{" "}
+              <IoTimeOutline /> Show Time{" "}
             </>
           )}
         </span>

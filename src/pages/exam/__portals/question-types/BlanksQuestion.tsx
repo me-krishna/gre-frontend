@@ -8,7 +8,7 @@ interface IBlanksQuestion {
 const BlanksQuestion: FC<IBlanksQuestion> = ({ question }) => {
   console.log(question, "question");
   return (
-    <div className="h-full flex justify-center items-center border border-[#4f4f4f] text-[#303030]">
+    <div className="h-full flex justify-center items-center text-[#303030]">
       <div className="font-light">
         <div
           className="mb-5"

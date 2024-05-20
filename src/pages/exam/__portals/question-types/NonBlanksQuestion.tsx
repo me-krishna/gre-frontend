@@ -7,7 +7,7 @@ interface NonBlanksQuestionProps {
 
 const NonBlanksQuestion: FC<NonBlanksQuestionProps> = ({ question }) => {
   return (
-    <div className="h-full w-full flex justify-center items-center border border-[#4f4f4f] text-[#303030]">
+    <div className="h-full w-full flex justify-center items-center text-[#303030]">
       <div className="font-light">
         <div dangerouslySetInnerHTML={{ __html: question.question }}></div>
         <div className="">
