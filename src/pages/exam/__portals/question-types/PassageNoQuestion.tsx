@@ -18,12 +18,12 @@ const PassageNoQuestion: FC<PassageNoQuestionProps> = ({
   };
 
   return (
-    <div className="flex justify-center items-start w-full px-2 sm:px-10 md:px-28 gap-3">
+    <div className="h-full flex justify-center items-start w-full gap-1 ">
       <div
-        className="text-sm w-1/2 text-justify p-2 border h-auto min-h-[435px] border-[#6c757d] rounded-tl rounded-bl"
+        className="text-sm w-1/2 text-justify p-2 border border-[#6c757d] rounded-tl rounded-bl h-full"
         dangerouslySetInnerHTML={{ __html: question.passage }}
       ></div>
-      <div className="w-1/2 p-1">
+      <div className="w-1/2">
         <div className="flex justify-start items-center gap-2 bg-[#6c757d] w-full p-2 rounded-t">
           <button className="border rounded bg-[#f8f9fa] border-[#f8f9fa] p-1 text-sm text-[#212529] px-3 hover:bg-[#e2e6ea] hover:text-[#212529]">
             Cut

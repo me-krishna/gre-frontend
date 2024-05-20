@@ -114,38 +114,43 @@ const Exam = () => {
   };
 
   return (
-    <div>
-      <ExamHeader
-        step={step}
-        testName={sectionDetails?.exam_title}
-        onClick={actionBtnClick}
-      />
-      <>
-        {/* {currentSection?.duration && ( */}
-        <SectionHeading
-          currentSection={1}
-          totalSections={sectionDetails?.no_sections}
-          currentQuestion={1}
-          totalQuestions={2}
-          // sectionTime={parseInt(currentSection?.duration) * 60}
-          sectionTime={1000}
+    <div className="flex justify-center h-screen w-screen bg-[#00000057]">
+      <div className="w-[60vw] h-[80vh] border bg-white overflow-auto">
+        <ExamHeader
+          step={step}
+          testName={sectionDetails?.exam_title}
+          onClick={actionBtnClick}
         />
-        {/* )} */}
-        <div className="w-screen h-[90vh] px-2 py-5">
-          <div className="container mx-auto h-full">
-            {step === 1 && <GeneralInfo />}
-            {(step === 2 || step === 3) && <SectionInfo />}
-            <div className="flex flex-col justify-between h-full">
-              <div>
-                {questionData?.question_config?.isThereHeaderInfo === true && (
-                  <div className="flex justify-center mb-3">
-                    <div className="bg-[#dddddd] p-2 px-3 rounded text-[12px]">
-                      {questionData?.question_config?.header_info}
+        <>
+          {/* {currentSection?.duration && ( */}
+          <SectionHeading
+            currentSection={1}
+            totalSections={sectionDetails?.no_sections}
+            currentQuestion={1}
+            totalQuestions={2}
+            // sectionTime={parseInt(currentSection?.duration) * 60}
+            sectionTime={1000}
+          />
+
+          <div className="p-1 h-full">
+            <div className="h-full">
+              {step === 1 && <GeneralInfo />}
+              {(step === 2 || step === 3) && <SectionInfo />}
+              <div className="flex flex-col justify-between h-full">
+                {questionData?.question_config?.isThereHeaderInfo === true &&
+                  !(
+                    questionData?.question_config?.question_type === "type1" &&
+                    questionData?.question_config?.isThisPassageHaveQuestion ===
+                      "yes"
+                  ) && (
+                    <div className="flex justify-center mb-3">
+                      <div className="bg-[#dddddd] p-2 px-3 rounded text-[13px]">
+                        {questionData?.question_config?.header_info}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
                 {/* Main Question Display */}
-                <div>
+                <div className="h-full py-2">
                   {questionData?.question_config?.question_type === "type1" &&
                     questionData?.question_config?.isThisPassageHaveQuestion ===
                       "no" && (
@@ -157,31 +162,36 @@ const Exam = () => {
 
                   {questionData?.question_config?.question_type === "type1" &&
                     questionData?.question_config?.isThisPassageHaveQuestion ===
-                      "yes" && <PassageQuestion />}
+                      "yes" && <PassageQuestion question={questionData} />}
 
                   {questionData?.question_config?.question_type === "type2" && (
                     <>
                       {parseInt(
                         questionData?.question_config?.no_of_blanks.toString()
-                      ) > 0 && <BlanksQuestion />}
+                      ) > 0 && <BlanksQuestion question={questionData} />}
                       {parseInt(
                         questionData?.question_config?.no_of_blanks.toString()
-                      ) === 0 && <NonBlanksQuestion />}
+                      ) === 0 && <NonBlanksQuestion question={questionData} />}
                     </>
                   )}
                 </div>
+                {questionData?.question_config?.isThereFooterInfo === true &&
+                  !(
+                    questionData?.question_config?.question_type === "type1" &&
+                    questionData?.question_config?.isThisPassageHaveQuestion ===
+                      "yes"
+                  ) && (
+                    <div className="flex justify-center mb-3">
+                      <div className="bg-[#dddddd] p-2 px-3 rounded text-[13px]">
+                        {questionData?.question_config?.footer_info}
+                      </div>
+                    </div>
+                  )}
               </div>
-              {questionData?.question_config?.isThereHeaderInfo === true && (
-                <div className="flex justify-center mb-3">
-                  <div className="bg-[#dddddd] p-2 px-3 rounded text-[12px]">
-                    {questionData?.question_config?.footer_info}
-                  </div>
-                </div>
-              )}
             </div>
           </div>
-        </div>
-      </>
+        </>
+      </div>
     </div>
   );
 };
