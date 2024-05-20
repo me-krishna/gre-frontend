@@ -25,7 +25,6 @@ const ExamHeader: React.FC<Props> = ({
   isThisQuestion,
   question_marked,
 }) => {
-  console.log(question_marked, "this question marked or not");
   const [showBtns, setShowBtns] = useState<number[]>([9]);
   const examButtons = [
     {

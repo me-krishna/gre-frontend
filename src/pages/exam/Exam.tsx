@@ -13,6 +13,7 @@ import ExitForce from "./__portals/ExitForce";
 import { error } from "../../lib/notify";
 import ExitSection from "./__portals/ExitSection";
 import QuitAndSave from "./__portals/QuitAndSave";
+import ReviewScreen from "./__portals/ReveiwScreen";
 
 const Exam = () => {
   const { exam_section_id } = useParams();
@@ -80,15 +81,19 @@ const Exam = () => {
   };
 
   const updateExamSection = async (inp: any) => {
-    const res = await useApi.post(`/updateExamSection`, {
-      section_id: exam_section_id,
-      updateData: {
-        ...inp,
-      },
-    });
-    const { status, data } = res;
-    if (status === 200) {
-      console.log(data, "data");
+    try {
+      const res = await useApi.post(`/updateExamSection`, {
+        section_id: exam_section_id,
+        updateData: {
+          ...inp,
+        },
+      });
+      // const { status, data } = res;
+      // if (status === 200) {
+      //   console.log(data, "data");
+      // }
+    } catch (e) {
+      console.error(e);
     }
   };
   const updateExamQuestionSection = async (inp: any) => {
@@ -142,6 +147,7 @@ const Exam = () => {
   };
 
   const actionBtnClick = (name: string) => {
+    console.log(name, "name");
     if (name === "Continue") {
       const nextQuestionIndex = currentQuestion + 1;
       const totalQuestions = allQuestions.length - 1;
@@ -179,6 +185,9 @@ const Exam = () => {
       updateExamQuestionSection({
         marked: questionData.marked === 1 ? 0 : 1,
       });
+    } else if (name === "Review") {
+      setIsThisAQuestion(false);
+      setStep(6);
     }
   };
 
@@ -212,6 +221,7 @@ const Exam = () => {
                   {step === 3 && <ExitForce topicTitle="Analitical Writing" />}
                   {step === 4 && <ExitSection />}
                   {step === 5 && <QuitAndSave />}
+                  {step === 6 && <ReviewScreen questionData={questionData} />}
                 </>
               )}
               {isThisAQuestion && (
