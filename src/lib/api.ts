@@ -30,7 +30,7 @@ useApi.interceptors.response.use((response) => {
   if (error.response && error.response.data) {
     if (error.response.status === 401) {
       localStorage.clear();
-      error("Session expired. Please login again.");;
+      error("Session expired. Please login again.");
       window.location.href = "/login";
     } else {
       return Promise.reject(error.response.data);
