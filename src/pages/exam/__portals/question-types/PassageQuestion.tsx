@@ -1,12 +1,19 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { v4 } from "uuid";
 
 interface PassageQuestionProps {
   question: any;
+  CorrectAnsUpdate: (correctAns: string, obj: any) => void;
 }
 
-const PassageQuestion: FC<PassageQuestionProps> = ({ question }) => {
-  console.log(question, "component");
+const PassageQuestion: FC<PassageQuestionProps> = ({ question , CorrectAnsUpdate}) => {
+  useEffect(() => {
+    if (question.correct_ans === "") {
+      console.log("Correct Answer is Empty");
+      CorrectAnsUpdate(JSON.stringify(question.non_blanks.answer), question);
+    }
+  }, []);
+
   return (
     <div className="h-[65vh] flex justify-center items-start w-full gap-1 m-1">
       <div

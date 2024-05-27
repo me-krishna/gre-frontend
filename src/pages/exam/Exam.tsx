@@ -96,6 +96,7 @@ const Exam = () => {
       console.error(e);
     }
   };
+
   const updateExamQuestionSection = async (inp: any) => {
     try {
       const res = await useApi.post(`/updateExamQuestionSection`, {
@@ -130,6 +131,14 @@ const Exam = () => {
     }
   };
 
+  const CorrectAnsUpdate = (correctAns: string, questionObj: any) => {
+    console.log(correctAns, "correctAns");
+    console.log(questionObj, "questionObj");
+    updateExamQuestionSection({
+      correct_ans: correctAns,
+    });
+  };
+
   useEffect(() => {
     getListOfQuestions();
   }, []);
@@ -147,10 +156,10 @@ const Exam = () => {
   };
 
   const actionBtnClick = (name: string) => {
-    console.log(name, "name");
     if (name === "Continue") {
+      setCurrentQuestion(0);
+      console.log(currentQuestion, "currentQuestion");
       const nextQuestionIndex = currentQuestion + 1;
-      const totalQuestions = allQuestions.length - 1;
       const nextQuestion = allQuestions[nextQuestionIndex];
       setCurrentQuestion(nextQuestionIndex);
       setQuestionData(nextQuestion);
@@ -160,10 +169,13 @@ const Exam = () => {
         last_question: nextQuestion.qid,
       });
     } else if (name === "Next") {
+      updateExamQuestionSection({
+        encountered: 1,
+      });
       const nextQuestionIndex = currentQuestion + 1;
       const totalQuestions = allQuestions.length - 1;
       const nextQuestion = allQuestions[nextQuestionIndex];
-      if (nextQuestion.question_section_no === questionData.section_id) {
+      if (nextQuestion.section_id === questionData.section_id) {
         if (totalQuestions >= nextQuestionIndex) {
           setCurrentQuestion(nextQuestionIndex);
           setQuestionData(nextQuestion);
@@ -178,6 +190,14 @@ const Exam = () => {
         setStep(3);
       }
     } else if (name === "Back") {
+      const prevQuestionIndex = currentQuestion - 1;
+      const prevQuestion = allQuestions[prevQuestionIndex];
+      if (
+        prevQuestionIndex > 0 &&
+        prevQuestion.section_id === questionData.section_id
+      ) {
+        setQuestionData(prevQuestion);
+      }
     } else if (name === "Return") {
       setIsThisAQuestion(true);
       setStep(1);
@@ -206,8 +226,12 @@ const Exam = () => {
           <SectionHeading
             currentSection={questionData?.question_section_no}
             totalSections={sectionDetails?.no_sections}
-            currentQuestion={1}
-            totalQuestions={2}
+            currentQuestion={currentQuestion+1}
+            totalQuestions={
+              allQuestions.filter(
+                (res) => res?.section_id === questionData?.section_id
+              ).length
+            }
             // sectionTime={parseInt(currentSection?.duration) * 60}
             sectionTime={1000}
           />
@@ -252,7 +276,10 @@ const Exam = () => {
                     {questionData?.question_config?.question_type === "type1" &&
                       questionData?.question_config
                         ?.isThisPassageHaveQuestion === "yes" && (
-                        <PassageQuestion question={questionData} />
+                        <PassageQuestion
+                          question={questionData}
+                          CorrectAnsUpdate={CorrectAnsUpdate}
+                        />
                       )}
 
                     {questionData?.question_config?.question_type ===
@@ -260,11 +287,19 @@ const Exam = () => {
                       <>
                         {parseInt(
                           questionData?.question_config?.no_of_blanks.toString()
-                        ) > 0 && <BlanksQuestion question={questionData} />}
+                        ) > 0 && (
+                          <BlanksQuestion
+                            question={questionData}
+                            CorrectAnsUpdate={CorrectAnsUpdate}
+                          />
+                        )}
                         {parseInt(
                           questionData?.question_config?.no_of_blanks.toString()
                         ) === 0 && (
-                          <NonBlanksQuestion question={questionData} />
+                          <NonBlanksQuestion
+                            question={questionData}
+                            CorrectAnsUpdate={CorrectAnsUpdate}
+                          />
                         )}
                       </>
                     )}

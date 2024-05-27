@@ -1,11 +1,25 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { v4 } from "uuid";
 
 interface NonBlanksQuestionProps {
   question: any;
+  CorrectAnsUpdate: (correctAns: string, obj: any) => void;
 }
 
-const NonBlanksQuestion: FC<NonBlanksQuestionProps> = ({ question }) => {
+const NonBlanksQuestion: FC<NonBlanksQuestionProps> = ({
+  question,
+  CorrectAnsUpdate,
+}) => {
+  console.info("NonBlanksQuestionProps", question);
+  // console.log(question.non_blanks.answer);
+
+  useEffect(() => {
+    if (question.correct_ans === "") {
+      console.log("Correct Answer is Empty");
+      CorrectAnsUpdate(JSON.stringify(question.non_blanks.answer), question);
+    }
+  }, []);
+
   return (
     <div className="h-full w-full flex justify-center items-center text-[#303030]">
       <div className="font-light">

@@ -1,12 +1,27 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { v4 } from "uuid";
 
 interface IBlanksQuestion {
   question: any;
+  CorrectAnsUpdate: (correctAns: string, obj: any) => void;
 }
 
-const BlanksQuestion: FC<IBlanksQuestion> = ({ question }) => {
-  console.log(question, "question");
+const BlanksQuestion: FC<IBlanksQuestion> = ({
+  question,
+  CorrectAnsUpdate,
+}) => {
+  console.log(question, "BlanksQuestionProps");
+
+  useEffect(() => {
+    if (question.correct_ans === "") {
+      console.log("Correct Answer is Empty", question.blanks);
+      CorrectAnsUpdate(
+        JSON.stringify(question.blanks.map((item: any) => item.answer)),
+        question
+      );
+    }
+  }, []);
+
   return (
     <div className="h-full flex justify-center items-center text-[#303030]">
       <div className="font-light">
