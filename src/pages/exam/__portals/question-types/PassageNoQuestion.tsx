@@ -9,12 +9,10 @@ const PassageNoQuestion: FC<PassageNoQuestionProps> = ({
   question,
   getAnswer,
 }) => {
-  const [ans, setAns] = useState<string>("");
-  console.log(question, "component");
+  const [ans, setAns] = useState<string>(question.passage_written ? question.passage_written : "");
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setAns(e.target.value);
     getAnswer(e.target.value);
-    console.log(e.target.value);
   };
 
   return (

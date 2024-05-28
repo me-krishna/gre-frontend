@@ -14,6 +14,7 @@ import { error } from "../../lib/notify";
 import ExitSection from "./__portals/ExitSection";
 import QuitAndSave from "./__portals/QuitAndSave";
 import ReviewScreen from "./__portals/ReveiwScreen";
+import { all } from "axios";
 
 const Exam = () => {
   const { exam_section_id } = useParams();
@@ -25,6 +26,7 @@ const Exam = () => {
   const [currentSection, setCurrentSection] = useState<any>({});
   const [allQuestions, setAllQuestions] = useState<any[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
+  const [pargraphsData, setPargraphsData] = useState<string>("");
   const [currentSectionData, setCurrentSectionData] = useState<{
     section_id: number;
     questionNumber: number;
@@ -57,7 +59,7 @@ const Exam = () => {
         }
       }
     } catch (error) {
-      console.log(error, "error");
+      console.error(error, "error");
     }
   };
 
@@ -105,13 +107,13 @@ const Exam = () => {
           ...inp,
         },
       });
-      const { status, data } = res;
-      if (status === 200) {
-        setQuestionData({
-          ...questionData,
-          marked: inp.marked,
-        });
-      }
+      // const { status, data } = res;
+      // if (status === 200) {
+      //   setQuestionData({
+      //     ...questionData,
+      //     marked: inp.marked,
+      //   });
+      // }
     } catch (e) {
       console.error(e);
     }
@@ -132,10 +134,15 @@ const Exam = () => {
   };
 
   const CorrectAnsUpdate = (correctAns: string, questionObj: any) => {
-    console.log(correctAns, "correctAns");
-    console.log(questionObj, "questionObj");
     updateExamQuestionSection({
       correct_ans: correctAns,
+    });
+  };
+
+  const attempAnswer = (attemptAns: string, questionObj: any) => {
+    allQuestions[currentQuestion].attempt_ans = attemptAns;
+    updateExamQuestionSection({
+      attempt_ans: attemptAns,
     });
   };
 
@@ -147,18 +154,14 @@ const Exam = () => {
     getExamSectionDetails();
   }, [allQuestions]);
 
-  // useEffect(() => {
-  //   // getQuestionFullData();
-  // }, [sectionDetails]);
-
   const type1QuestionUpdate = (e: string) => {
-    console.log(e, "e test now");
+    allQuestions[currentQuestion].passage_written = e;
+    setPargraphsData(e);
   };
 
   const actionBtnClick = (name: string) => {
     if (name === "Continue") {
       setCurrentQuestion(0);
-      console.log(currentQuestion, "currentQuestion");
       const nextQuestionIndex = currentQuestion + 1;
       const nextQuestion = allQuestions[nextQuestionIndex];
       setCurrentQuestion(nextQuestionIndex);
@@ -169,6 +172,15 @@ const Exam = () => {
         last_question: nextQuestion.qid,
       });
     } else if (name === "Next") {
+      if (
+        questionData?.question_config?.question_type === "type1" &&
+        questionData?.question_config?.isThisPassageHaveQuestion === "no"
+      ) {
+        updateExamQuestionSection({
+          passage_written: pargraphsData,
+        });
+      }
+
       updateExamQuestionSection({
         encountered: 1,
       });
@@ -190,12 +202,22 @@ const Exam = () => {
         setStep(3);
       }
     } else if (name === "Back") {
+      if (
+        questionData?.question_config?.question_type === "type1" &&
+        questionData?.question_config?.isThisPassageHaveQuestion === "no"
+      ) {
+        updateExamQuestionSection({
+          passage_written: pargraphsData,
+        });
+      }
+
       const prevQuestionIndex = currentQuestion - 1;
       const prevQuestion = allQuestions[prevQuestionIndex];
       if (
         prevQuestionIndex > 0 &&
         prevQuestion.section_id === questionData.section_id
       ) {
+        setCurrentQuestion(prevQuestionIndex);
         setQuestionData(prevQuestion);
       }
     } else if (name === "Return") {
@@ -226,7 +248,7 @@ const Exam = () => {
           <SectionHeading
             currentSection={questionData?.question_section_no}
             totalSections={sectionDetails?.no_sections}
-            currentQuestion={currentQuestion+1}
+            currentQuestion={currentQuestion + 1}
             totalQuestions={
               allQuestions.filter(
                 (res) => res?.section_id === questionData?.section_id
@@ -279,6 +301,7 @@ const Exam = () => {
                         <PassageQuestion
                           question={questionData}
                           CorrectAnsUpdate={CorrectAnsUpdate}
+                          AttemptAnsUpdate={attempAnswer}
                         />
                       )}
 
@@ -291,6 +314,7 @@ const Exam = () => {
                           <BlanksQuestion
                             question={questionData}
                             CorrectAnsUpdate={CorrectAnsUpdate}
+                            AttemptAnsUpdate={attempAnswer}
                           />
                         )}
                         {parseInt(
@@ -299,6 +323,7 @@ const Exam = () => {
                           <NonBlanksQuestion
                             question={questionData}
                             CorrectAnsUpdate={CorrectAnsUpdate}
+                            AttemptAnsUpdate={attempAnswer}
                           />
                         )}
                       </>

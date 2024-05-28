@@ -1,21 +1,40 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { v4 } from "uuid";
 
 interface NonBlanksQuestionProps {
   question: any;
   CorrectAnsUpdate: (correctAns: string, obj: any) => void;
+  AttemptAnsUpdate: (attemptAns: string, obj: any) => void;
 }
 
 const NonBlanksQuestion: FC<NonBlanksQuestionProps> = ({
   question,
   CorrectAnsUpdate,
+  AttemptAnsUpdate,
 }) => {
-  console.info("NonBlanksQuestionProps", question);
-  // console.log(question.non_blanks.answer);
+  const [selectedOptions, setSelectedOptions] = useState<number[]>(
+    question.attempt_ans !== "" ? JSON.parse(question.attempt_ans) : []
+  );
+
+  const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const optionValue = Number(event.target.value);
+    if (question.non_blanks.answer.length > 1) {
+      setSelectedOptions((prevOptions) =>
+        prevOptions.includes(optionValue)
+          ? prevOptions.filter((option) => option !== optionValue)
+          : [...prevOptions, optionValue]
+      );
+    } else {
+      setSelectedOptions([optionValue]);
+    }
+  };
+
+  useEffect(() => {
+    AttemptAnsUpdate(JSON.stringify(selectedOptions), question);
+  }, [selectedOptions]);
 
   useEffect(() => {
     if (question.correct_ans === "") {
-      console.log("Correct Answer is Empty");
       CorrectAnsUpdate(JSON.stringify(question.non_blanks.answer), question);
     }
   }, []);
@@ -33,6 +52,9 @@ const NonBlanksQuestion: FC<NonBlanksQuestionProps> = ({
                 type={
                   question.non_blanks.answer.length > 1 ? "checkbox" : "radio"
                 }
+                checked={selectedOptions.includes(idx + 1)}
+                value={idx + 1}
+                onChange={handleOptionChange}
               />
               <label
                 htmlFor={question.question_id + "_options" + idx}
