@@ -10,11 +10,9 @@ import PassageQuestion from "./__portals/question-types/PassageQuestion";
 import BlanksQuestion from "./__portals/question-types/BlanksQuestion";
 import NonBlanksQuestion from "./__portals/question-types/NonBlanksQuestion";
 import ExitForce from "./__portals/ExitForce";
-import { error } from "../../lib/notify";
 import ExitSection from "./__portals/ExitSection";
 import QuitAndSave from "./__portals/QuitAndSave";
 import ReviewScreen from "./__portals/ReveiwScreen";
-import { all } from "axios";
 
 const Exam = () => {
   const { exam_section_id } = useParams();
@@ -254,8 +252,8 @@ const Exam = () => {
                 (res) => res?.section_id === questionData?.section_id
               ).length
             }
-            // sectionTime={parseInt(currentSection?.duration) * 60}
-            sectionTime={1000}
+            sectionTime={parseInt(currentSection?.duration) * 60}
+            // sectionTime={1000}
           />
 
           <div>

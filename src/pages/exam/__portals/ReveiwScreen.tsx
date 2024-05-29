@@ -12,6 +12,12 @@ const ReviewScreen: FC<ReviewScreenProps> = ({ questionData }) => {
   const [isDecending, setIsDecending] = useState<boolean>(false);
   const [tableOne, setTableOne] = useState<any[]>([]);
   const [tableTwo, setTableTwo] = useState<any[]>([]);
+  const [activeQuestion, setActiveQuestion] = useState<number>(
+    questionData.qid
+  );
+
+  console.log(questionData);
+
   const getData = async () => {
     try {
       const res = await useApi.post(
@@ -103,7 +109,8 @@ const ReviewScreen: FC<ReviewScreenProps> = ({ questionData }) => {
           <div className="flex justify-between gap-2">
             <div>
               <h3 className="text-xl font-bold">
-                First {tableOne.length} Rows Sorted by Number in Ascending Order
+                First {tableOne.length} Rows Sorted by Number in{" "}
+                {isDecending ? "Descending" : "Ascending"} Order
               </h3>
               <table className="w-full border-black border-2 p-1">
                 <thead>
@@ -131,14 +138,31 @@ const ReviewScreen: FC<ReviewScreenProps> = ({ questionData }) => {
                 </thead>
                 <tbody>
                   {tableOne.map((item, index) => (
-                    <tr key={index}>
+                    <tr
+                      onClick={() => setActiveQuestion(item.id)}
+                      key={index}
+                      className={`${
+                        item.id === activeQuestion
+                          ? "bg-sky-100"
+                          : item.encountered === 0
+                          ? "bg-[#00000068]"
+                          : ""
+                      }`}
+                    >
                       <td className="text-center">
                         {isDecending ? data.length - index : index + 1}
                       </td>
                       <td className="text-center">
-                        {/* {item.encountered === 0
+                        {item.encountered === 0
                           ? "Not Encountered"
-                          : "Encountered"} */}
+                          : item.attempt_ans === "" ||
+                            item.attempt_ans === null ||
+                            JSON.parse(item.attempt_ans).length === 0
+                          ? "Not Answered"
+                          : JSON.parse(item.correct_ans).length ===
+                            JSON.parse(item.attempt_ans).length
+                          ? "Answered"
+                          : "Incomplete"}
                       </td>
                       <td className="text-center font-bold">
                         {item.marked === 1 ? <FaCheck /> : ""}
@@ -150,7 +174,8 @@ const ReviewScreen: FC<ReviewScreenProps> = ({ questionData }) => {
             </div>
             <div>
               <h3 className="text-xl font-bold">
-                Last {tableTwo.length} Rows Sorted by Number in Ascending Order
+                Last {tableTwo.length} Rows Sorted by Number in{" "}
+                {isDecending ? "Descending" : "Ascending"} Order
               </h3>
               <table className="w-full border-black border-2 p-1">
                 <thead>
@@ -179,9 +204,14 @@ const ReviewScreen: FC<ReviewScreenProps> = ({ questionData }) => {
                 <tbody>
                   {tableTwo.map((item, index) => (
                     <tr
+                      onClick={() => setActiveQuestion(item.id)}
                       key={index}
                       className={`${
-                        item.encountered === 0 ? "bg-[#00000068]" : ""
+                        item.id === activeQuestion
+                          ? "bg-sky-100"
+                          : item.encountered === 0
+                          ? "bg-[#00000068]"
+                          : ""
                       }`}
                     >
                       <td className="text-center">
@@ -191,7 +221,18 @@ const ReviewScreen: FC<ReviewScreenProps> = ({ questionData }) => {
                           ? data.length - tableOne.length - index
                           : tableOne.length + (index + 1)}
                       </td>
-                      <td className="text-center"> </td>
+                      <td className="text-center">
+                        {item.encountered === 0
+                          ? "Not Encountered"
+                          : item.attempt_ans === "" ||
+                            item.attempt_ans === null ||
+                            JSON.parse(item.attempt_ans).length === 0
+                          ? "Not Answered"
+                          : JSON.parse(item.correct_ans).length ===
+                            JSON.parse(item.attempt_ans).length
+                          ? "Answered"
+                          : "Incomplete"}
+                      </td>
                       <td className="text-center">
                         {item.marked === 1 ? (
                           <FaCheck className="text-center" size={18} />

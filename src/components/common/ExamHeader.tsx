@@ -2,7 +2,7 @@ import { FaCalculator, FaLeftLong } from "react-icons/fa6";
 import { MdCheckBoxOutlineBlank } from "react-icons/md";
 import { IoMdCheckboxOutline } from "react-icons/io";
 import { FaRegSave } from "react-icons/fa";
-import { RiCheckboxBlankCircleFill } from "react-icons/ri";
+import { FiTarget } from "react-icons/fi";
 import { BsFillDoorOpenFill } from "react-icons/bs";
 import { FaRegQuestionCircle } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa";
@@ -134,7 +134,7 @@ const ExamHeader: React.FC<Props> = ({
     {
       id: 11,
       name: "Go to Question",
-      icon: <RiCheckboxBlankCircleFill size={20} width={20} />,
+      icon: <FiTarget size={20} width={20} />,
       show: true,
       style: {
         backgroundImage: "linear-gradient(#3b69a0, #305481)",
@@ -143,7 +143,12 @@ const ExamHeader: React.FC<Props> = ({
   ];
 
   useEffect(() => {
-    const buttons = isThisQuestion === true ? [1, 2, 4, 5, 6, 8, 9] : [7, 10];
+    const buttons =
+      isThisQuestion === true
+        ? [1, 2, 4, 5, 6, 8, 9]
+        : step === 6
+        ? [7, 11]
+        : [7, 10];
     setShowBtns(buttons);
   }, [isThisQuestion]);
 
