@@ -4,7 +4,7 @@ import GeneralInfo from "./__portals/GeneralInfo";
 import SectionHeading from "./__portals/SectionHeading";
 import SectionInfo from "./__portals/SectionInfo";
 import PassageNoQuestion from "./__portals/question-types/PassageNoQuestion";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useApi from "../../lib/api";
 import PassageQuestion from "./__portals/question-types/PassageQuestion";
 import BlanksQuestion from "./__portals/question-types/BlanksQuestion";
@@ -13,30 +13,29 @@ import ExitForce from "./__portals/ExitForce";
 import ExitSection from "./__portals/ExitSection";
 import QuitAndSave from "./__portals/QuitAndSave";
 import ReviewScreen from "./__portals/ReveiwScreen";
+import EndOfTest from "./__portals/EndOfTest";
+import ReportYourScore from "./__portals/ReportYourScore";
+import PracticeTestResults from "./__portals/PracticeTestResults";
 
 const Exam = () => {
+  const navigate = useNavigate();
   const { exam_section_id } = useParams();
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(9);
   const [noOfSections, setNoOfSections] = useState<any[]>([]);
   const [sectionDetails, setSectionDetails] = useState<any>({});
-  const [isThisAQuestion, setIsThisAQuestion] = useState<boolean>(true);
+  const [isThisAQuestion, setIsThisAQuestion] = useState<boolean>(false);
   const [questionData, setQuestionData] = useState<any>({});
   const [currentSection, setCurrentSection] = useState<any>({});
   const [allQuestions, setAllQuestions] = useState<any[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
   const [pargraphsData, setPargraphsData] = useState<string>("");
-  const [currentSectionData, setCurrentSectionData] = useState<{
-    section_id: number;
-    questionNumber: number;
-  }>({
-    section_id: 0,
-    questionNumber: 0,
-  });
+ 
   const getExamSectionDetails = async () => {
     try {
       const res = await useApi.post(`/getSectionFullDetails`, {
         section_id: exam_section_id,
       });
+
       const { status, data } = res;
       if (status === 200) {
         setNoOfSections(data.data.testSections);
@@ -61,37 +60,14 @@ const Exam = () => {
     }
   };
 
-  const getQuestionFullData = async () => {
-    if (sectionDetails?.last_section === null) {
-      setCurrentSection(noOfSections[0]);
-      const res = await useApi.post(`/getExamQuestion`, {
-        sessionId: exam_section_id,
-        sectionsId: noOfSections[0].section_id,
-        questionNumber: 1,
-      });
-      if (res.status === 200) {
-        setQuestionData({
-          ...res.data.data,
-          non_blanks: JSON.parse(res.data.data.non_blanks),
-          question_config: JSON.parse(res.data.data.question_config),
-          blanks: JSON.parse(res.data.data.blanks),
-        });
-      }
-    }
-  };
-
   const updateExamSection = async (inp: any) => {
     try {
-      const res = await useApi.post(`/updateExamSection`, {
+      await useApi.post(`/updateExamSection`, {
         section_id: exam_section_id,
         updateData: {
           ...inp,
         },
       });
-      // const { status, data } = res;
-      // if (status === 200) {
-      //   console.log(data, "data");
-      // }
     } catch (e) {
       console.error(e);
     }
@@ -99,19 +75,12 @@ const Exam = () => {
 
   const updateExamQuestionSection = async (inp: any) => {
     try {
-      const res = await useApi.post(`/updateExamQuestionSection`, {
+      await useApi.post(`/updateExamQuestionSection`, {
         qid: questionData.qid,
         updateData: {
           ...inp,
         },
       });
-      // const { status, data } = res;
-      // if (status === 200) {
-      //   setQuestionData({
-      //     ...questionData,
-      //     marked: inp.marked,
-      //   });
-      // }
     } catch (e) {
       console.error(e);
     }
@@ -157,47 +126,54 @@ const Exam = () => {
     setPargraphsData(e);
   };
 
-  const actionBtnClick = (name: string) => {
+  const actionBtnClick = (name: string, id: number) => {
     if (name === "Continue") {
-      setCurrentQuestion(0);
-      const nextQuestionIndex = currentQuestion + 1;
-      const nextQuestion = allQuestions[nextQuestionIndex];
-      setCurrentQuestion(nextQuestionIndex);
-      setQuestionData(nextQuestion);
-      setIsThisAQuestion(true);
-      setStep(1);
-      updateExamSection({
-        last_question: nextQuestion.qid,
-      });
-    } else if (name === "Next") {
-      if (
-        questionData?.question_config?.question_type === "type1" &&
-        questionData?.question_config?.isThisPassageHaveQuestion === "no"
-      ) {
-        updateExamQuestionSection({
-          passage_written: pargraphsData,
+      if (step !== 7) {
+        setCurrentQuestion(0);
+        const nextQuestionIndex = currentQuestion + 1;
+        const nextQuestion = allQuestions[nextQuestionIndex];
+        setCurrentQuestion(nextQuestionIndex);
+        setQuestionData(nextQuestion);
+        setIsThisAQuestion(true);
+        setStep(1);
+        updateExamSection({
+          last_question: nextQuestion.qid,
         });
-      }
-
-      updateExamQuestionSection({
-        encountered: 1,
-      });
-      const nextQuestionIndex = currentQuestion + 1;
-      const totalQuestions = allQuestions.length - 1;
-      const nextQuestion = allQuestions[nextQuestionIndex];
-      if (nextQuestion.section_id === questionData.section_id) {
-        if (totalQuestions >= nextQuestionIndex) {
-          setCurrentQuestion(nextQuestionIndex);
-          setQuestionData(nextQuestion);
-          updateExamSection({
-            last_question: nextQuestion.qid,
-          });
-        } else {
-          alert("No more questions");
-        }
       } else {
+        setStep(8);
+      }
+    } else if (name === "Next") {
+      if (currentQuestion === allQuestions.length - 1) {
         setIsThisAQuestion(false);
-        setStep(3);
+        setStep(7);
+      } else {
+        if (
+          questionData?.question_config?.question_type === "type1" &&
+          questionData?.question_config?.isThisPassageHaveQuestion === "no"
+        ) {
+          updateExamQuestionSection({
+            passage_written: pargraphsData,
+          });
+        }
+
+        updateExamQuestionSection({
+          encountered: 1,
+        });
+        const nextQuestionIndex = currentQuestion + 1;
+        const totalQuestions = allQuestions.length - 1;
+        const nextQuestion = allQuestions[nextQuestionIndex];
+        if (nextQuestion.section_id === questionData.section_id) {
+          if (totalQuestions >= nextQuestionIndex) {
+            setCurrentQuestion(nextQuestionIndex);
+            setQuestionData(nextQuestion);
+            updateExamSection({
+              last_question: nextQuestion.qid,
+            });
+          }
+        } else {
+          setIsThisAQuestion(false);
+          setStep(3);
+        }
       }
     } else if (name === "Back") {
       if (
@@ -228,7 +204,55 @@ const Exam = () => {
     } else if (name === "Review") {
       setIsThisAQuestion(false);
       setStep(6);
+    } else if (name === "Exit Section") {
+      if (id === 1) {
+        setIsThisAQuestion(false);
+        setStep(4);
+        nextSectionCheck();
+      } else {
+        setIsThisAQuestion(true);
+        setStep(1);
+      }
+    } else if (name === "Quit & Save") {
+      if (id === 2) {
+        setIsThisAQuestion(false);
+        setStep(5);
+      } else {
+        navigate("/");
+      }
     }
+  };
+
+  const nextSectionCheck = () => {
+    const currentSection = questionData.question_section_no;
+    const nextSectionData = allQuestions.filter((item: any) => {
+      return item.question_section_no === currentSection + 1;
+    });
+    if (nextSectionData.length > 0) {
+      setCurrentQuestion(
+        allQuestions.findIndex(
+          (item: any) => item.qid === nextSectionData[0].qid
+        )
+      );
+      setQuestionData(nextSectionData[0]);
+      updateExamSection({
+        last_question: nextSectionData[0].qid,
+      });
+    } else {
+      setStep(5);
+    }
+  };
+
+  const currentQuestionNumberOnSection = () => {
+    const currentSection = questionData?.question_section_no;
+    const currentSectionQuestions = allQuestions.filter((item: any) => {
+      return item?.question_section_no === currentSection;
+    });
+    return (
+      currentSectionQuestions.findIndex(
+        (item: any) => item.qid === questionData.qid
+      ) + 1
+    );
   };
 
   return (
@@ -240,20 +264,19 @@ const Exam = () => {
           testName={sectionDetails?.exam_title}
           onClick={actionBtnClick}
           question_marked={questionData?.marked}
+          currentSectionQuestionNumber={currentQuestionNumberOnSection()}
         />
         <>
-          {/* {currentSection?.duration && ( */}
           <SectionHeading
             currentSection={questionData?.question_section_no}
             totalSections={sectionDetails?.no_sections}
-            currentQuestion={currentQuestion + 1}
+            currentQuestion={currentQuestionNumberOnSection()}
             totalQuestions={
               allQuestions.filter(
                 (res) => res?.section_id === questionData?.section_id
               ).length
             }
             sectionTime={parseInt(currentSection?.duration) * 60}
-            // sectionTime={1000}
           />
 
           <div>
@@ -266,6 +289,9 @@ const Exam = () => {
                   {step === 4 && <ExitSection />}
                   {step === 5 && <QuitAndSave />}
                   {step === 6 && <ReviewScreen questionData={questionData} />}
+                  {step === 7 && <EndOfTest />}
+                  {step === 8 && <ReportYourScore />}
+                  {step === 9 && <PracticeTestResults />}
                 </>
               )}
               {isThisAQuestion && (

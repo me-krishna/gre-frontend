@@ -12,7 +12,7 @@ const ExitSection = () => {
         <br />
         <p>
           Select <span className="font-semibold">Exit Section</span> to confirm
-          that you would like to exit this section. Select
+          that you would like to exit this section. Select{" "}
           <span className="font-semibold">Return </span> to return to the
           section. test.
         </p>
