@@ -5,6 +5,7 @@ import Login from "./pages/auth/login";
 
 const Dashboard = lazy(() => import("./pages/dashboard"));
 const Exam = lazy(() => import("./pages/exam/Exam"));
+const ReviewScore = lazy(() => import("./pages/review-scores"));
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route element={<PriavateRoute />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/mock-test/:exam_section_id" element={<Exam />} />
+          <Route path="/review-score/:exam_section_id" element={<ReviewScore />} />
         </Route>
         <Route path="/login" element={<Login />} />
       </Routes>

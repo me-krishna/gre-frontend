@@ -26,6 +26,14 @@ const ExamHeader: React.FC<Props> = ({
   question_marked,
   currentSectionQuestionNumber,
 }) => {
+  console.log(
+    testName,
+    step,
+    isThisQuestion,
+    question_marked,
+    currentSectionQuestionNumber,
+    "hjg guiw iueiuwiue fiwuetiuweif gw"
+  );
   const [showBtns, setShowBtns] = useState<number[]>([9]);
   const examButtons = [
     {
@@ -193,7 +201,7 @@ const ExamHeader: React.FC<Props> = ({
         ? [7, 13]
         : step === 4
         ? [7, 12]
-        : step === 7
+        : step === 7 || step === 10
         ? [10]
         : step === 8
         ? [14, 15]
