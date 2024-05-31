@@ -1,4 +1,5 @@
 import { VscTriangleLeft } from "react-icons/vsc";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Tags = ({ title, value }: { title: string; value: string }) => {
   return (
@@ -16,6 +17,15 @@ const Tags = ({ title, value }: { title: string; value: string }) => {
 };
 
 const PracticeTestResults = () => {
+  const params = useParams<{ exam_section_id: string }>();
+  const nav = useNavigate();
+  const constinueBtnClick = () => {
+    if (params.exam_section_id) {
+      nav(`/mock-test/${params.exam_section_id}`);
+    } else {
+      nav(`/`);
+    }
+  };
   return (
     <div className="p-4">
       <h1 className="text-[2rem] text-[#cc6813]">Practice Test Results</h1>
@@ -31,7 +41,11 @@ const PracticeTestResults = () => {
           <div className="bg-gray-200 w-full min-h-80 rounded p-8">
             <div className="flex justify-start gap-2">
               <div className="w-[50%]">
-                <img src="/images/ptr.png" alt="PTR" className="w-[200px] h-auto p-3 rounded-md blur-[2px] " />
+                <img
+                  src="/images/ptr.png"
+                  alt="PTR"
+                  className="w-[200px] h-auto p-3 rounded-md blur-[2px] "
+                />
               </div>
               <div className="space-y-3">
                 <p className="text-3xl">Congratulations!</p>

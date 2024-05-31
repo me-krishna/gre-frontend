@@ -39,7 +39,7 @@ const Dashboard: React.FC = () => {
     });
     const { status, data } = res;
     if (status === 200) {
-      nav(`/gretest/${data.data.section_id}`);
+      nav(`/mock-test/${data.data.section_id}`);
     } else {
       error(
         "Something went wrong, please try again or contact our support team."
@@ -48,7 +48,7 @@ const Dashboard: React.FC = () => {
   };
 
   const continueTest = async (sectionId: string) => {
-    nav(`/gretest/${sectionId}`);
+    nav(`/mock-test/${sectionId}`);
   };
 
   useEffect(() => {
