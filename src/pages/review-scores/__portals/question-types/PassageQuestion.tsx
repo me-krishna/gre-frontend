@@ -24,7 +24,7 @@ const PassageQuestion: FC<PassageQuestionProps> = ({
         question.correct_ans !== "" ? JSON.parse(question.correct_ans) : []
       );
     }
-  }, [answerMode]);
+  }, [answerMode,question]);
 
   return (
     <div className="h-[65vh] flex justify-center items-start w-full gap-1 m-1">

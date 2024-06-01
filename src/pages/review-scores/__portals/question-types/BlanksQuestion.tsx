@@ -12,7 +12,6 @@ const BlanksQuestion: FC<IBlanksQuestion> = ({ question, answerMode }) => {
   );
 
   useEffect(() => {
-    console.log("answerMode", answerMode , question);
     if (answerMode === true) {
       setSelectedOptions(
         question.attempt_ans !== "" ? JSON.parse(question.attempt_ans) : []
@@ -22,7 +21,7 @@ const BlanksQuestion: FC<IBlanksQuestion> = ({ question, answerMode }) => {
         question.correct_ans !== "" ? JSON.parse(question.correct_ans) : []
       );
     }
-  }, [answerMode]);
+  }, [answerMode,question]);
 
   return (
     <div className="h-full flex justify-center items-center text-[#303030]">

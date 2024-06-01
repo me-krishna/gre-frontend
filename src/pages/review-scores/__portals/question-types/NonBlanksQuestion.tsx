@@ -24,7 +24,7 @@ const NonBlanksQuestion: FC<NonBlanksQuestionProps> = ({
         question.correct_ans !== "" ? JSON.parse(question.correct_ans) : []
       );
     }
-  }, [answerMode]);
+  }, [answerMode,question]);
 
 
   return (

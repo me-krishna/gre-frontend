@@ -180,6 +180,7 @@ const Exam = () => {
           question_marked={questionData?.marked}
           currentSectionQuestionNumber={currentQuestionNumberOnSection()}
           currentQuestionAnswerModeChange={answerChange}
+          questionId={questionData?.qid}
         />
         <>
           <div>

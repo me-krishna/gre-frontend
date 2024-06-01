@@ -16,7 +16,6 @@ const ReviewScreen: FC<ReviewScreenProps> = ({ questionData }) => {
     questionData.qid
   );
 
-  console.log(questionData);
 
   const getData = async () => {
     try {
