@@ -53,7 +53,15 @@ const Exam = () => {
       });
 
       if (res.status === 200) {
-        setAllQuestions(res.data.data);
+        const data = res.data.data as any[];
+        const flt = data.filter(
+          (item) =>
+            !(
+              item.question_config.question_type === "type1" &&
+              item.question_config.isThisPassageHaveQuestion === "no"
+            )
+        );
+        setAllQuestions(flt);
       }
     } catch (error) {
       console.log(error, "error");
@@ -69,7 +77,7 @@ const Exam = () => {
   }, [allQuestions]);
 
   const actionBtnClick = (name: string, id: number) => {
-    setCurrentQuestionAns(true)
+    setCurrentQuestionAns(true);
     if (name === "Continue") {
       if (step !== 7) {
         setCurrentQuestion(0);
@@ -80,7 +88,7 @@ const Exam = () => {
         setIsThisAQuestion(true);
         setStep(1);
       } else {
-        setStep(8);
+        navigate("/")
       }
     } else if (name === "Next") {
       if (currentQuestion === allQuestions.length - 1) {

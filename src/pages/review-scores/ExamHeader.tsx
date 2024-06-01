@@ -141,38 +141,40 @@ const ExamHeader: React.FC<Props> = ({
             <h2 className="capitalize text-white font-medium text-[15px] ">
               {testName}
             </h2>
-            <div className="flex justify-start bg-[#70426d] h-[45px] items-center p-2 rounded-md gap-2">
-              <button
-                className="flex gap-1 justify-center items-center p-1 border-2 border-white rounded-md "
-                onClick={() => {
-                  setIsMyAnswer(true);
-                  currentQuestionAnswerModeChange(true);
-                }}
-              >
-                {isMyAnswer ? (
-                  <MdRadioButtonChecked size={20} className="text-white" />
-                ) : (
-                  <MdRadioButtonUnchecked size={20} className="text-white" />
-                )}
+            {step === 1 && (
+              <div className="flex justify-start bg-[#70426d] h-[45px] items-center p-2 rounded-md gap-2">
+                <button
+                  className="flex gap-1 justify-center items-center p-1 border-2 border-white rounded-md "
+                  onClick={() => {
+                    setIsMyAnswer(true);
+                    currentQuestionAnswerModeChange(true);
+                  }}
+                >
+                  {isMyAnswer ? (
+                    <MdRadioButtonChecked size={20} className="text-white" />
+                  ) : (
+                    <MdRadioButtonUnchecked size={20} className="text-white" />
+                  )}
 
-                <span className="text-white text-[15px]">My Answer</span>
-              </button>
-              <button
-                className="flex gap-1 justify-center items-center p-1 border-2 border-white rounded-md"
-                onClick={() => {
-                  setIsMyAnswer(false);
-                  currentQuestionAnswerModeChange(false);
-                }}
-              >
-                {isMyAnswer ? (
-                  <MdRadioButtonUnchecked size={20} className="text-white" />
-                ) : (
-                  <MdRadioButtonChecked size={20} className="text-white" />
-                )}
+                  <span className="text-white text-[15px]">My Answer</span>
+                </button>
+                <button
+                  className="flex gap-1 justify-center items-center p-1 border-2 border-white rounded-md"
+                  onClick={() => {
+                    setIsMyAnswer(false);
+                    currentQuestionAnswerModeChange(false);
+                  }}
+                >
+                  {isMyAnswer ? (
+                    <MdRadioButtonUnchecked size={20} className="text-white" />
+                  ) : (
+                    <MdRadioButtonChecked size={20} className="text-white" />
+                  )}
 
-                <span className="text-white text-[15px]">Correct Answer</span>
-              </button>
-            </div>
+                  <span className="text-white text-[15px]">Correct Answer</span>
+                </button>
+              </div>
+            )}
           </div>
           <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse gap-2">
             {activatedBtns.map((btn, index) => (
