@@ -26,6 +26,7 @@ const Exam = () => {
   const [questionData, setQuestionData] = useState<any>({});
   const [allQuestions, setAllQuestions] = useState<any[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(true);
   const [currentQuestionAnsMode, setCurrentQuestionAns] =
     useState<boolean>(true);
   const getExamSectionDetails = async () => {
@@ -62,6 +63,7 @@ const Exam = () => {
             )
         );
         setAllQuestions(flt);
+        setLoading(false);
       }
     } catch (error) {
       console.log(error, "error");
@@ -70,10 +72,12 @@ const Exam = () => {
 
   useEffect(() => {
     getListOfQuestions();
+    
   }, []);
 
   useEffect(() => {
     getExamSectionDetails();
+    // setLoading(false);
   }, [allQuestions]);
 
   const actionBtnClick = (name: string, id: number) => {
@@ -88,7 +92,7 @@ const Exam = () => {
         setIsThisAQuestion(true);
         setStep(1);
       } else {
-        navigate("/")
+        navigate("/");
       }
     } else if (name === "Next") {
       if (currentQuestion === allQuestions.length - 1) {
@@ -105,7 +109,7 @@ const Exam = () => {
           }
         } else {
           setIsThisAQuestion(false);
-          setStep(3);
+          setStep(4);
         }
       }
     } else if (name === "Back") {
@@ -180,98 +184,110 @@ const Exam = () => {
   return (
     <div className="flex justify-center h-screen w-screen bg-[#00000057]">
       <div className="lg:w-[60vw] md:w-[79vw] h-[80vh] bg-white">
-        <ExamHeader
-          isThisQuestion={isThisAQuestion}
-          step={step}
-          testName={sectionDetails?.exam_title}
-          onClick={actionBtnClick}
-          question_marked={questionData?.marked}
-          currentSectionQuestionNumber={currentQuestionNumberOnSection()}
-          currentQuestionAnswerModeChange={answerChange}
-          questionId={questionData?.qid}
-        />
-        <>
-          <div>
-            <div>
-              {!isThisAQuestion && (
-                <>
-                  {step === 1 && <GeneralInfo />}
-                  {step === 2 && <SectionInfo />}
-                  {step === 3 && <ExitForce topicTitle="Analitical Writing" />}
-                  {step === 4 && <ExitSection />}
-                  {step === 5 && <QuitAndSave />}
-                  {step === 6 && <ReviewScreen questionData={questionData} />}
-                  {step === 7 && <EndOfTest />}
-                  {step === 8 && <ReportYourScore />}
-                  {step === 9 && <PracticeTestResults />}
-                  {step === 10 && <ProgressSummary />}
-                </>
-              )}
-              {isThisAQuestion && (
-                <div className="flex flex-col justify-between h-[71vh] overflow-auto border border-[#5e5e5e] p-1">
-                  {questionData?.question_config?.isThereHeaderInfo === true &&
-                    !(
-                      questionData?.question_config?.question_type ===
-                        "type1" &&
-                      questionData?.question_config
-                        ?.isThisPassageHaveQuestion === "yes"
-                    ) && (
-                      <div className="flex justify-center mb-3">
-                        <div className="bg-[#dddddd] p-2 px-3 rounded text-[13px]">
-                          {questionData?.question_config?.header_info}
-                        </div>
-                      </div>
-                    )}
-                  <div className="h-full">
-                    {questionData?.question_config?.question_type === "type1" &&
-                      questionData?.question_config
-                        ?.isThisPassageHaveQuestion === "yes" && (
-                        <PassageQuestion
-                          question={questionData}
-                          answerMode={currentQuestionAnsMode}
-                        />
+        {!loading && (
+          <>
+            <ExamHeader
+              isThisQuestion={isThisAQuestion}
+              step={step}
+              testName={sectionDetails?.exam_title}
+              onClick={actionBtnClick}
+              question_marked={questionData?.marked}
+              currentSectionQuestionNumber={currentQuestionNumberOnSection()}
+              currentQuestionAnswerModeChange={answerChange}
+              questionId={questionData?.qid}
+            />
+            <>
+              <div>
+                <div>
+                  {!isThisAQuestion && (
+                    <>
+                      {step === 1 && <GeneralInfo />}
+                      {step === 2 && <SectionInfo />}
+                      {step === 3 && (
+                        <ExitForce topicTitle="Analitical Writing" />
                       )}
+                      {step === 4 && <ExitSection />}
+                      {step === 5 && <QuitAndSave />}
+                      {step === 6 && (
+                        <ReviewScreen questionData={questionData} />
+                      )}
+                      {step === 7 && <EndOfTest />}
+                      {step === 8 && <ReportYourScore />}
+                      {step === 9 && <PracticeTestResults />}
+                      {step === 10 && <ProgressSummary />}
+                    </>
+                  )}
+                  {isThisAQuestion && (
+                    <div className="flex flex-col justify-between h-[71vh] overflow-auto border border-[#5e5e5e] p-1">
+                      {questionData?.question_config?.isThereHeaderInfo ===
+                        true &&
+                        !(
+                          questionData?.question_config?.question_type ===
+                            "type1" &&
+                          questionData?.question_config
+                            ?.isThisPassageHaveQuestion === "yes"
+                        ) && (
+                          <div className="flex justify-center mb-3">
+                            <div className="bg-[#dddddd] p-2 px-3 rounded text-[13px]">
+                              {questionData?.question_config?.header_info}
+                            </div>
+                          </div>
+                        )}
+                      <div className="h-full">
+                        {questionData?.question_config?.question_type ===
+                          "type1" &&
+                          questionData?.question_config
+                            ?.isThisPassageHaveQuestion === "yes" && (
+                            <PassageQuestion
+                              question={questionData}
+                              answerMode={currentQuestionAnsMode}
+                            />
+                          )}
 
-                    {questionData?.question_config?.question_type ===
-                      "type2" && (
-                      <>
-                        {parseInt(
-                          questionData?.question_config?.no_of_blanks.toString()
-                        ) > 0 && (
-                          <BlanksQuestion
-                            answerMode={currentQuestionAnsMode}
-                            question={questionData}
-                          />
+                        {questionData?.question_config?.question_type ===
+                          "type2" && (
+                          <>
+                            {parseInt(
+                              questionData?.question_config?.no_of_blanks.toString()
+                            ) > 0 && (
+                              <BlanksQuestion
+                                answerMode={currentQuestionAnsMode}
+                                question={questionData}
+                              />
+                            )}
+                            {parseInt(
+                              questionData?.question_config?.no_of_blanks.toString()
+                            ) === 0 && (
+                              <NonBlanksQuestion
+                                question={questionData}
+                                answerMode={currentQuestionAnsMode}
+                              />
+                            )}
+                          </>
                         )}
-                        {parseInt(
-                          questionData?.question_config?.no_of_blanks.toString()
-                        ) === 0 && (
-                          <NonBlanksQuestion
-                            question={questionData}
-                            answerMode={currentQuestionAnsMode}
-                          />
-                        )}
-                      </>
-                    )}
-                  </div>
-                  {questionData?.question_config?.isThereFooterInfo === true &&
-                    !(
-                      questionData?.question_config?.question_type ===
-                        "type1" &&
-                      questionData?.question_config
-                        ?.isThisPassageHaveQuestion === "yes"
-                    ) && (
-                      <div className="flex justify-center my-2">
-                        <div className="bg-[#dddddd] p-2 px-3 rounded text-[13px]">
-                          {questionData?.question_config?.footer_info}
-                        </div>
                       </div>
-                    )}
+                      {questionData?.question_config?.isThereFooterInfo ===
+                        true &&
+                        !(
+                          questionData?.question_config?.question_type ===
+                            "type1" &&
+                          questionData?.question_config
+                            ?.isThisPassageHaveQuestion === "yes"
+                        ) && (
+                          <div className="flex justify-center my-2">
+                            <div className="bg-[#dddddd] p-2 px-3 rounded text-[13px]">
+                              {questionData?.question_config?.footer_info}
+                            </div>
+                          </div>
+                        )}
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          </div>
-        </>
+              </div>
+            </>
+          </>
+        )}
+        {loading && <p>loading...</p>}
       </div>
     </div>
   );

@@ -205,6 +205,8 @@ const ExamHeader: React.FC<Props> = ({
         ? [10]
         : step === 8
         ? [14, 15]
+        : step === 9
+        ? []
         : [7, 10];
     setShowBtns(buttons);
   }, [isThisQuestion, step]);

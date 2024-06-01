@@ -20,10 +20,10 @@ import PracticeTestResults from "./__portals/PracticeTestResults";
 const Exam = () => {
   const navigate = useNavigate();
   const { exam_section_id } = useParams();
-  const [step, setStep] = useState(9);
+  const [step, setStep] = useState(1);
   const [noOfSections, setNoOfSections] = useState<any[]>([]);
   const [sectionDetails, setSectionDetails] = useState<any>({});
-  const [isThisAQuestion, setIsThisAQuestion] = useState<boolean>(false);
+  const [isThisAQuestion, setIsThisAQuestion] = useState<boolean>(true);
   const [questionData, setQuestionData] = useState<any>({});
   const [currentSection, setCurrentSection] = useState<any>({});
   const [allQuestions, setAllQuestions] = useState<any[]>([]);
@@ -267,6 +267,7 @@ const Exam = () => {
           currentSectionQuestionNumber={currentQuestionNumberOnSection()}
         />
         <>
+
           <SectionHeading
             currentSection={questionData?.question_section_no}
             totalSections={sectionDetails?.no_sections}
@@ -277,6 +278,7 @@ const Exam = () => {
               ).length
             }
             sectionTime={parseInt(currentSection?.duration) * 60}
+            step={step}
           />
 
           <div>
