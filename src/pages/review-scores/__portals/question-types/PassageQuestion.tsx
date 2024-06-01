@@ -3,41 +3,28 @@ import { v4 } from "uuid";
 
 interface PassageQuestionProps {
   question: any;
-  CorrectAnsUpdate: (correctAns: string, obj: any) => void;
-  AttemptAnsUpdate: (attemptAns: string, obj: any) => void;
+  answerMode: boolean;
 }
 
 const PassageQuestion: FC<PassageQuestionProps> = ({
   question,
-  CorrectAnsUpdate,
-  AttemptAnsUpdate,
+  answerMode,
 }) => {
   const [selectedOptions, setSelectedOptions] = useState<number[]>(
     question.attempt_ans !== "" ? JSON.parse(question.attempt_ans) : []
   );
 
-  const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const optionValue = Number(event.target.value);
-    if (question.non_blanks.answer.length > 1) {
-      setSelectedOptions((prevOptions) =>
-        prevOptions.includes(optionValue)
-          ? prevOptions.filter((option) => option !== optionValue)
-          : [...prevOptions, optionValue]
+  useEffect(() => {
+    if (answerMode === true) {
+      setSelectedOptions(
+        question.attempt_ans !== "" ? JSON.parse(question.attempt_ans) : []
       );
     } else {
-      setSelectedOptions([optionValue]);
+      setSelectedOptions(
+        question.correct_ans !== "" ? JSON.parse(question.correct_ans) : []
+      );
     }
-  };
-
-  useEffect(() => {
-    AttemptAnsUpdate(JSON.stringify(selectedOptions), question);
-  }, [selectedOptions]);
-
-  useEffect(() => {
-    if (question.correct_ans === "") {
-      CorrectAnsUpdate(JSON.stringify(question.non_blanks.answer), question);
-    }
-  }, []);
+  }, [answerMode]);
 
   return (
     <div className="h-[65vh] flex justify-center items-start w-full gap-1 m-1">
@@ -67,6 +54,8 @@ const PassageQuestion: FC<PassageQuestionProps> = ({
                     (option: any, idx: number) => (
                       <div key={v4()} className="flex items-center gap-2">
                         <input
+                          readOnly
+                          disabled
                           name={question.question_id + "_options"}
                           id={question.question_id + "_options" + idx}
                           type={
@@ -76,7 +65,6 @@ const PassageQuestion: FC<PassageQuestionProps> = ({
                           }
                           checked={selectedOptions.includes(idx + 1)}
                           value={idx + 1}
-                          onChange={handleOptionChange}
                         />
                         <label
                           htmlFor={question.question_id + "_options" + idx}

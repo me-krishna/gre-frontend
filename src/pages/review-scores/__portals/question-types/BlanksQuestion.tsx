@@ -1,56 +1,28 @@
-import useApi from "../../../../lib/api";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { v4 } from "uuid";
-import { useReducer } from "react";
 
-const reducer = (
-  state: number[][],
-  action: { type: string; blankNo: number; optionNo: number }
-) => {
-  switch (action.type) {
-    case "SET_OPTION":
-      const newOptions = [...state];
-      newOptions[action.blankNo - 1] = [action.optionNo];
-      return newOptions;
-    default:
-      throw new Error();
-  }
-};
 interface IBlanksQuestion {
   question: any;
-  CorrectAnsUpdate: (correctAns: string, obj: any) => void;
-  AttemptAnsUpdate: (attemptAns: string, obj: any) => void;
+  answerMode: boolean;
 }
 
-const BlanksQuestion: FC<IBlanksQuestion> = ({
-  question,
-  CorrectAnsUpdate,
-  AttemptAnsUpdate,
-}) => {
+const BlanksQuestion: FC<IBlanksQuestion> = ({ question, answerMode }) => {
   const [selectedOptions, setSelectedOptions] = useState<number[][]>(
     question.attempt_ans !== "" ? JSON.parse(question.attempt_ans) : []
   );
 
-  const handleOptionChange = (blankNo: number, optionNo: number) => {
-    setSelectedOptions((prevOptions: number[][]) => {
-      const newOptions = [...prevOptions];
-      newOptions[blankNo - 1] = [optionNo];
-      return newOptions;
-    });
-  };
-
   useEffect(() => {
-    AttemptAnsUpdate(JSON.stringify(selectedOptions), question);
-  }, [selectedOptions]);
-
-  useEffect(() => {
-    if (question.correct_ans === "") {
-      CorrectAnsUpdate(
-        JSON.stringify(question.blanks.map((item: any) => item.answer)),
-        question
+    console.log("answerMode", answerMode , question);
+    if (answerMode === true) {
+      setSelectedOptions(
+        question.attempt_ans !== "" ? JSON.parse(question.attempt_ans) : []
+      );
+    } else {
+      setSelectedOptions(
+        question.correct_ans !== "" ? JSON.parse(question.correct_ans) : []
       );
     }
-  }, []);
+  }, [answerMode]);
 
   return (
     <div className="h-full flex justify-center items-center text-[#303030]">
@@ -76,7 +48,6 @@ const BlanksQuestion: FC<IBlanksQuestion> = ({
                   }`}
                 >
                   <span
-                    onClick={() => handleOptionChange(idx + 1, idxi + 1)}
                     className={`cursor-pointer px-3 min-w-[100px] max-w-[200px]`}
                     dangerouslySetInnerHTML={{ __html: option }}
                   ></span>

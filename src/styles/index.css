@@ -3,10 +3,9 @@
 @tailwind utilities;
 
 @layer base {
-  body {
+  /* body {
     font-family: Futura, 'Century Gothic', AppleGothic, sans-serif;
-    font-weight: 300;
-  }
+  } */
 }
 
 table,

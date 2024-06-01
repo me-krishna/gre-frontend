@@ -20,7 +20,7 @@ const ExamButton: FC<Props> = ({
   return (
     <button
       disabled={disabled}
-      className={`border py-1 px-2 rounded text-[14px] text-white border-white h-[56px] min-w-[62px] flex flex-col justify-center items-center hover:border-slate-200 hover:text-slate-200 ${className}
+      className={`border py-1 px-2 rounded text-[14px] text-white border-white h-[45px] min-w-[62px] flex flex-col justify-center items-center hover:border-slate-200 hover:text-slate-200 ${className}
 
       `}
       onClick={onClick && onClick}
