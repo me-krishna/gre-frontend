@@ -16,6 +16,7 @@ import ReviewScreen from "./__portals/ReveiwScreen";
 import EndOfTest from "./__portals/EndOfTest";
 import ReportYourScore from "./__portals/ReportYourScore";
 import PracticeTestResults from "./__portals/PracticeTestResults";
+import { error } from "../../lib/notify";
 
 const Exam = () => {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const Exam = () => {
   const [allQuestions, setAllQuestions] = useState<any[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
   const [pargraphsData, setPargraphsData] = useState<string>("");
- 
+
   const getExamSectionDetails = async () => {
     try {
       const res = await useApi.post(`/getSectionFullDetails`, {
@@ -126,19 +127,36 @@ const Exam = () => {
     setPargraphsData(e);
   };
 
+  const reportScoresSubmit = async () => {
+    const res = await useApi.post("/submitTheFinalExam", {
+      section_id: exam_section_id,
+    });
+    const { status } = res;
+    if (status === 200) {
+      setIsThisAQuestion(false);
+      setStep(9);
+    } else {
+      error("somthing went wrong!");
+    }
+  };
+
   const actionBtnClick = (name: string, id: number) => {
     if (name === "Continue") {
       if (step !== 7) {
-        setCurrentQuestion(0);
-        const nextQuestionIndex = currentQuestion + 1;
-        const nextQuestion = allQuestions[nextQuestionIndex];
-        setCurrentQuestion(nextQuestionIndex);
-        setQuestionData(nextQuestion);
-        setIsThisAQuestion(true);
-        setStep(1);
-        updateExamSection({
-          last_question: nextQuestion.qid,
-        });
+        if (step === 3) {
+          setStep(2);
+          setCurrentQuestion(0);
+          const nextQuestionIndex = currentQuestion + 1;
+          const nextQuestion = allQuestions[nextQuestionIndex];
+          setCurrentQuestion(nextQuestionIndex);
+          setQuestionData(nextQuestion);
+          updateExamSection({
+            last_question: nextQuestion.qid,
+          });
+        } else {
+          setIsThisAQuestion(true);
+          setStep(1);
+        }
       } else {
         setStep(8);
       }
@@ -220,6 +238,8 @@ const Exam = () => {
       } else {
         navigate("/");
       }
+    } else if (name === "Report Scores") {
+      reportScoresSubmit();
     }
   };
 
@@ -267,7 +287,6 @@ const Exam = () => {
           currentSectionQuestionNumber={currentQuestionNumberOnSection()}
         />
         <>
-
           <SectionHeading
             currentSection={questionData?.question_section_no}
             totalSections={sectionDetails?.no_sections}
@@ -286,8 +305,15 @@ const Exam = () => {
               {!isThisAQuestion && (
                 <>
                   {step === 1 && <GeneralInfo />}
-                  {step === 2 && <SectionInfo />}
-                  {step === 3 && <ExitForce topicTitle="Analitical Writing" />}
+                  {step === 2 && (
+                    <SectionInfo
+                      question={questionData}
+                      sectionData={sectionDetails?.testSections}
+                    />
+                  )}
+                  {step === 3 && (
+                    <ExitForce topicTitle={questionData.topicName} />
+                  )}
                   {step === 4 && <ExitSection />}
                   {step === 5 && <QuitAndSave />}
                   {step === 6 && <ReviewScreen questionData={questionData} />}

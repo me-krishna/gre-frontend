@@ -117,6 +117,7 @@ const Login = () => {
                      }
                     `}
                     placeholder="name@company.com"
+                    autoComplete="on"
                   />
                   {errors.email && (
                     <p className="text-red-500">{errors.email.message}</p>
@@ -130,6 +131,7 @@ const Login = () => {
                     Password
                   </label>
                   <input
+                    autoComplete="on"
                     type="password"
                     id="password"
                     {...register("password")}

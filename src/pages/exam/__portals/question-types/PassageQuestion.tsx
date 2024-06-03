@@ -74,7 +74,7 @@ const PassageQuestion: FC<PassageQuestionProps> = ({
                               ? "checkbox"
                               : "radio"
                           }
-                          checked={selectedOptions.includes(idx + 1)}
+                          checked={selectedOptions!==null && selectedOptions.includes(idx + 1)}
                           value={idx + 1}
                           onChange={handleOptionChange}
                         />

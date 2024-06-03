@@ -1,6 +1,12 @@
-const AnaliticalWriting = () => {
+const AnaliticalWriting = ({
+  questions,
+  sectionData,
+}: {
+  questions: any;
+  sectionData: any;
+}) => {
   return (
-    <div className="p-10">
+    <div className="p-10 text-[0.8rem]">
       <h3 className="font-bold text-[#414043] text-2xl  border-b border-[#B0AFAF] ">
         Analytical Writing
       </h3>

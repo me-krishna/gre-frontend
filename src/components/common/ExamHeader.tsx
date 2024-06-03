@@ -26,14 +26,6 @@ const ExamHeader: React.FC<Props> = ({
   question_marked,
   currentSectionQuestionNumber,
 }) => {
-  console.log(
-    testName,
-    step,
-    isThisQuestion,
-    question_marked,
-    currentSectionQuestionNumber,
-    "hjg guiw iueiuwiue fiwuetiuweif gw"
-  );
   const [showBtns, setShowBtns] = useState<number[]>([9]);
   const examButtons = [
     {
@@ -195,6 +187,8 @@ const ExamHeader: React.FC<Props> = ({
     const buttons =
       isThisQuestion === true
         ? [1, 2, 4, 6, 8, 9]
+        : step === 2
+        ? [10]
         : step === 6
         ? [7, 11]
         : step === 5
@@ -218,16 +212,11 @@ const ExamHeader: React.FC<Props> = ({
       <nav>
         <div className="flex flex-wrap items-center justify-between mx-auto py-1 px-2">
           <div className="flex items-center justify-center gap-3">
-            {/* <Link
-              to="/"
-              className="flex items-center space-x-3 rtl:space-x-reverse"
-            >
-              <img
-                src="/images/logos/logo.png"
-                className="h-[50px] w-1/2 md:w-1/4"
-                alt="Dr Raju's Education Academy Logo"
-              />
-            </Link> */}
+            <img
+              src="/images/logos/logo.png"
+              className="h-[50px] w-1/2 md:w-1/4"
+              alt="Dr Raju's Education Academy Logo"
+            />
             <h2 className="capitalize text-white font-medium text-[15px] ">
               {testName}
             </h2>

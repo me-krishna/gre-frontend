@@ -17,8 +17,9 @@ const ExitForce = ({ topicTitle }: { topicTitle: string }) => {
         </p>
         <br />
         <p>
-          Once you leave this section you <span className="font-semibold">WILL NOT</span> be able to
-          return to it.
+          Once you leave this section you{" "}
+          <span className="font-semibold">WILL NOT</span> be able to return to
+          it.
         </p>
       </div>
     </div>

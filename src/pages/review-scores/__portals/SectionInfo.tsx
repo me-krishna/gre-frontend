@@ -1,4 +1,5 @@
-const SectionInfo = () => {
+const SectionInfo = ({ question }: { question: any }) => {
+  console.log(question);
   return (
     <div>
       <h3 className="font-bold text-3xl">Section INFORMATION</h3>

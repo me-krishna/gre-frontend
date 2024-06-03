@@ -51,6 +51,10 @@ const Dashboard: React.FC = () => {
     nav(`/mock-test/${sectionId}`);
   };
 
+  const reviewResult = (sectionId: string) => {
+    nav(`/review-score/${sectionId}`);
+  };
+
   useEffect(() => {
     getListOfTest();
   }, []);
@@ -112,9 +116,15 @@ const Dashboard: React.FC = () => {
                               )}
                           </Table.Cell>
                           <Table.Cell>
-                            {test?.attemptedData?.status === 1 ? (
-                              <Badge color="indigo" className="inline-block">
-                                View Result
+                            {test?.attemptedData?.test_status === 1 ? (
+                              <Badge
+                                color="indigo"
+                                className="inline-block cursor-pointer"
+                                onClick={() =>
+                                  reviewResult(test?.attemptedData?.section_id)
+                                }
+                              >
+                                Review Your Test
                               </Badge>
                             ) : (
                               <Badge color="pink" className="inline-block">

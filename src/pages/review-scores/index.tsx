@@ -19,10 +19,10 @@ import ExamHeader from "./ExamHeader";
 const Exam = () => {
   const navigate = useNavigate();
   const { exam_section_id } = useParams();
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(10);
   const [noOfSections, setNoOfSections] = useState<any[]>([]);
   const [sectionDetails, setSectionDetails] = useState<any>({});
-  const [isThisAQuestion, setIsThisAQuestion] = useState<boolean>(true);
+  const [isThisAQuestion, setIsThisAQuestion] = useState<boolean>(false);
   const [questionData, setQuestionData] = useState<any>({});
   const [allQuestions, setAllQuestions] = useState<any[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
@@ -109,7 +109,7 @@ const Exam = () => {
           }
         } else {
           setIsThisAQuestion(false);
-          setStep(4);
+          setStep(2);
         }
       }
     } else if (name === "Back") {
@@ -183,7 +183,7 @@ const Exam = () => {
 
   return (
     <div className="flex justify-center h-screen w-screen bg-[#00000057]">
-      <div className="lg:w-[60vw] md:w-[79vw] h-[80vh] bg-white">
+      <div className="lg:w-[66vw] md:w-[79vw] h-[80vh] bg-white">
         {!loading && (
           <>
             <ExamHeader
@@ -202,7 +202,7 @@ const Exam = () => {
                   {!isThisAQuestion && (
                     <>
                       {step === 1 && <GeneralInfo />}
-                      {step === 2 && <SectionInfo />}
+                      {step === 2 && <SectionInfo question={questionData} />}
                       {step === 3 && (
                         <ExitForce topicTitle="Analitical Writing" />
                       )}
