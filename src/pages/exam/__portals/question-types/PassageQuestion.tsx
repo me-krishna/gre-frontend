@@ -30,7 +30,8 @@ const PassageQuestion: FC<PassageQuestionProps> = ({
   };
 
   useEffect(() => {
-    AttemptAnsUpdate(JSON.stringify(selectedOptions), question);
+    selectedOptions !== null &&
+      AttemptAnsUpdate(JSON.stringify(selectedOptions), question);
   }, [selectedOptions]);
 
   useEffect(() => {
@@ -74,7 +75,10 @@ const PassageQuestion: FC<PassageQuestionProps> = ({
                               ? "checkbox"
                               : "radio"
                           }
-                          checked={selectedOptions!==null && selectedOptions.includes(idx + 1)}
+                          checked={
+                            selectedOptions !== null &&
+                            selectedOptions?.includes(idx + 1)
+                          }
                           value={idx + 1}
                           onChange={handleOptionChange}
                         />

@@ -120,6 +120,7 @@ const Exam = () => {
 
   useEffect(() => {
     getExamSectionDetails();
+    console.log(allQuestions, "allQuestions");
   }, [allQuestions]);
 
   const type1QuestionUpdate = (e: string) => {
@@ -177,6 +178,7 @@ const Exam = () => {
         updateExamQuestionSection({
           encountered: 1,
         });
+
         const nextQuestionIndex = currentQuestion + 1;
         const totalQuestions = allQuestions.length - 1;
         const nextQuestion = allQuestions[nextQuestionIndex];
@@ -308,7 +310,7 @@ const Exam = () => {
                   {step === 2 && (
                     <SectionInfo
                       question={questionData}
-                      sectionData={sectionDetails?.testSections}
+                      sectionData={noOfSections}
                     />
                   )}
                   {step === 3 && (

@@ -8,7 +8,7 @@ interface NonBlanksQuestionProps {
 
 const NonBlanksQuestion: FC<NonBlanksQuestionProps> = ({
   question,
-  answerMode
+  answerMode,
 }) => {
   const [selectedOptions, setSelectedOptions] = useState<number[]>(
     question.attempt_ans !== "" ? JSON.parse(question.attempt_ans) : []
@@ -24,8 +24,7 @@ const NonBlanksQuestion: FC<NonBlanksQuestionProps> = ({
         question.correct_ans !== "" ? JSON.parse(question.correct_ans) : []
       );
     }
-  }, [answerMode,question]);
-
+  }, [answerMode, question]);
 
   return (
     <div className="h-full w-full flex justify-center items-center text-[#303030]">
@@ -42,7 +41,7 @@ const NonBlanksQuestion: FC<NonBlanksQuestionProps> = ({
                 type={
                   question.non_blanks.answer.length > 1 ? "checkbox" : "radio"
                 }
-                checked={selectedOptions.includes(idx + 1)}
+                checked={selectedOptions?.includes(idx + 1)}
                 value={idx + 1}
               />
               <label

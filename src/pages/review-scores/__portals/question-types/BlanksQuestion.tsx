@@ -40,6 +40,7 @@ const BlanksQuestion: FC<IBlanksQuestion> = ({ question, answerMode }) => {
                 <div
                   key={v4()}
                   className={`flex items-center gap-2 border border-collapse border-[#4f4f4f] ${
+                    selectedOptions &&
                     selectedOptions[idx] &&
                     selectedOptions[idx].includes(idxi + 1)
                       ? "bg-[#0d0d0d] text-white"

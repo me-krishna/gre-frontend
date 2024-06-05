@@ -72,7 +72,6 @@ const Exam = () => {
 
   useEffect(() => {
     getListOfQuestions();
-    
   }, []);
 
   useEffect(() => {
@@ -202,7 +201,12 @@ const Exam = () => {
                   {!isThisAQuestion && (
                     <>
                       {step === 1 && <GeneralInfo />}
-                      {step === 2 && <SectionInfo question={questionData} />}
+                      {step === 2 && (
+                        <SectionInfo
+                          question={questionData}
+                          sectionData={noOfSections}
+                        />
+                      )}
                       {step === 3 && (
                         <ExitForce topicTitle="Analitical Writing" />
                       )}

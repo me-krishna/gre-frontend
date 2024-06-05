@@ -14,25 +14,31 @@ const SectionInfo: FC<SectionInfoProps> = ({ question, sectionData }) => {
       {question.topic_id === 1 && (
         <AnaliticalWriting
           questions={question}
-          sectionData={sectionData.filter(
-            (res: any) => res.section_id === question.section_id
-          )}
+          sectionData={
+            sectionData.filter(
+              (res: any) => res.section_id === question.section_id
+            )[0]
+          }
         />
       )}
       {question.topic_id === 3 && (
         <VerbalReasoning
           questions={question}
-          sectionData={sectionData.filter(
-            (res: any) => res.section_id === question.section_id
-          )}
+          sectionData={
+            sectionData.filter(
+              (res: any) => res.section_id === question.section_id
+            )[0]
+          }
         />
       )}
       {question.topic_id === 2 && (
         <QuantitaveReasoning
           questions={question}
-          sectionData={sectionData.filter(
-            (res: any) => res.section_id === question.section_id
-          )}
+          sectionData={
+            sectionData.filter(
+              (res: any) => res.section_id === question.section_id
+            )[0]
+          }
         />
       )}
     </div>

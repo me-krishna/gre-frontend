@@ -30,7 +30,8 @@ const NonBlanksQuestion: FC<NonBlanksQuestionProps> = ({
   };
 
   useEffect(() => {
-    AttemptAnsUpdate(JSON.stringify(selectedOptions), question);
+    selectedOptions !== null &&
+      AttemptAnsUpdate(JSON.stringify(selectedOptions), question);
   }, [selectedOptions]);
 
   useEffect(() => {
@@ -52,7 +53,7 @@ const NonBlanksQuestion: FC<NonBlanksQuestionProps> = ({
                 type={
                   question.non_blanks.answer.length > 1 ? "checkbox" : "radio"
                 }
-                checked={selectedOptions.includes(idx + 1)}
+                checked={selectedOptions?.includes(idx + 1)}
                 value={idx + 1}
                 onChange={handleOptionChange}
               />
