@@ -17,6 +17,8 @@ import EndOfTest from "./__portals/EndOfTest";
 import ReportYourScore from "./__portals/ReportYourScore";
 import PracticeTestResults from "./__portals/PracticeTestResults";
 import { error } from "../../lib/notify";
+import SectionFineshed from "./__portals/SectionFineshed";
+import { set } from "react-hook-form";
 
 const Exam = () => {
   const navigate = useNavigate();
@@ -24,7 +26,7 @@ const Exam = () => {
   const [step, setStep] = useState(1);
   const [noOfSections, setNoOfSections] = useState<any[]>([]);
   const [sectionDetails, setSectionDetails] = useState<any>({});
-  const [isThisAQuestion, setIsThisAQuestion] = useState<boolean>(true);
+  const [isThisAQuestion, setIsThisAQuestion] = useState<boolean>(false);
   const [questionData, setQuestionData] = useState<any>({});
   const [currentSection, setCurrentSection] = useState<any>({});
   const [allQuestions, setAllQuestions] = useState<any[]>([]);
@@ -42,18 +44,34 @@ const Exam = () => {
         setNoOfSections(data.data.testSections);
         setSectionDetails(data.data.testDetails);
         if (data.data.testDetails.last_question === null) {
+          setStep(1);
+          setIsThisAQuestion(true);
           setCurrentQuestion(0);
           setQuestionData(allQuestions[0]);
           updateExamSection({
             last_question: allQuestions[0].qid,
           });
+          const currentQuestionSection = allQuestions[0]?.question_section_id;
+          const currentSectionq = data.data.testSections.find(
+            (item: any) => item.section_id === currentQuestionSection
+          );
+          if (currentSectionq) {
+            setCurrentSection(currentSectionq);
+          }
         } else {
           let c = allQuestions.findIndex(
             (e: any, i: number) =>
               e.qid == data?.data?.testDetails?.last_question
           );
-          setCurrentQuestion(c);
-          setQuestionData(allQuestions[c]);
+          const currentQuestionSection = allQuestions[c]?.question_section_id;
+          const currentSectionq = data.data.testSections.find(
+            (item: any) => item.section_id === currentQuestionSection
+          );
+          if (currentSectionq) {
+            setCurrentSection(currentSectionq);
+            setCurrentQuestion(c);
+            setQuestionData(allQuestions[c]);
+          }
         }
       }
     } catch (error) {
@@ -120,7 +138,6 @@ const Exam = () => {
 
   useEffect(() => {
     getExamSectionDetails();
-    console.log(allQuestions, "allQuestions");
   }, [allQuestions]);
 
   const type1QuestionUpdate = (e: string) => {
@@ -144,7 +161,9 @@ const Exam = () => {
   const actionBtnClick = (name: string, id: number) => {
     if (name === "Continue") {
       if (step !== 7) {
-        if (step === 3) {
+        if (step === 1) {
+          setIsThisAQuestion(false);
+        } else if (step === 3) {
           setStep(2);
           setCurrentQuestion(0);
           const nextQuestionIndex = currentQuestion + 1;
@@ -246,9 +265,9 @@ const Exam = () => {
   };
 
   const nextSectionCheck = () => {
-    const currentSection = questionData.question_section_no;
+    const currentSectionw = questionData.question_section_no;
     const nextSectionData = allQuestions.filter((item: any) => {
-      return item.question_section_no === currentSection + 1;
+      return item.question_section_no === currentSectionw + 1;
     });
     if (nextSectionData.length > 0) {
       setCurrentQuestion(
@@ -266,9 +285,9 @@ const Exam = () => {
   };
 
   const currentQuestionNumberOnSection = () => {
-    const currentSection = questionData?.question_section_no;
+    const currentSectionw = questionData?.question_section_no;
     const currentSectionQuestions = allQuestions.filter((item: any) => {
-      return item?.question_section_no === currentSection;
+      return item?.question_section_no === currentSectionw;
     });
     return (
       currentSectionQuestions.findIndex(
@@ -276,6 +295,8 @@ const Exam = () => {
       ) + 1
     );
   };
+
+  const currentSectionTimeExpires = () => {};
 
   return (
     <div className="flex justify-center h-screen w-screen bg-[#00000057]">
@@ -289,18 +310,22 @@ const Exam = () => {
           currentSectionQuestionNumber={currentQuestionNumberOnSection()}
         />
         <>
-          <SectionHeading
-            currentSection={questionData?.question_section_no}
-            totalSections={sectionDetails?.no_sections}
-            currentQuestion={currentQuestionNumberOnSection()}
-            totalQuestions={
-              allQuestions.filter(
-                (res) => res?.section_id === questionData?.section_id
-              ).length
-            }
-            sectionTime={parseInt(currentSection?.duration) * 60}
-            step={step}
-          />
+          {/* parseInt(currentSection?.duration) */}
+          {parseInt(currentSection?.duration) > 0 && (
+            <SectionHeading
+              currentSection={questionData?.question_section_no}
+              totalSections={sectionDetails?.no_sections}
+              currentQuestion={currentQuestionNumberOnSection()}
+              totalQuestions={
+                allQuestions.filter(
+                  (res) => res?.section_id === questionData?.section_id
+                ).length
+              }
+              sectionTime={10}
+              step={step}
+              sectionTimerExpired={currentSectionTimeExpires}
+            />
+          )}
 
           <div>
             <div>
@@ -322,6 +347,7 @@ const Exam = () => {
                   {step === 7 && <EndOfTest />}
                   {step === 8 && <ReportYourScore />}
                   {step === 9 && <PracticeTestResults />}
+                  {step === 10 && <SectionFineshed />}
                 </>
               )}
               {isThisAQuestion && (

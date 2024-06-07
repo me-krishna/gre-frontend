@@ -9,6 +9,7 @@ const SectionHeading = ({
   totalQuestions,
   sectionTime,
   step,
+  sectionTimerExpired,
 }: {
   currentSection: number;
   totalSections: number;
@@ -16,15 +17,25 @@ const SectionHeading = ({
   totalQuestions: number;
   sectionTime: number;
   step: number;
+  sectionTimerExpired: () => void;
 }) => {
   const [showTimer, setShowTimer] = useState(true);
   const time = new Date();
   time.setSeconds(time.getSeconds() + sectionTime);
-
   const { seconds, minutes, hours } = useTimer({
     expiryTimestamp: time,
-    onExpire: () => console.warn("onExpire called"),
+    onExpire: () => sectionTimerExpired(),
   });
+
+  console.info(
+    currentSection,
+    totalSections,
+    currentQuestion,
+    totalQuestions,
+    sectionTime,
+    step,
+    "props"
+  );
 
   return (
     <div className="bg-[#f0e1e4] px-3 py1 flex justify-between items-center border-y border-t-2 border-t-[#882f5c] border-b-[#b4b4b4]">

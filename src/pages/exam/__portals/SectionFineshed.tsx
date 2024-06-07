@@ -1,4 +1,4 @@
-const SectionFineshed = ({ topicTitle }: { topicTitle: string }) => {
+const SectionFineshed = () => {
   return (
     <div className="p-10">
       <h3 className="font-bold text-[#414043] text-2xl  border-b border-[#B0AFAF] ">
