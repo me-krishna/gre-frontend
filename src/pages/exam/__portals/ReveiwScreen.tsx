@@ -34,7 +34,6 @@ const ReviewScreen: FC<ReviewScreenProps> = ({ questionData }) => {
           const half = Math.ceil(len / 2);
           const tableOneData = data.slice(0, half);
           const tableTwoData = data.slice(half, len);
-          // console.log(tableOneData, tableTwoData);
           setTableOne(tableOneData);
           setTableTwo(tableTwoData);
         }

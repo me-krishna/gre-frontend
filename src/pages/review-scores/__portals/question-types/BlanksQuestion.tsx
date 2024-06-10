@@ -8,7 +8,6 @@ interface IBlanksQuestion {
 }
 
 const BlanksQuestion: FC<IBlanksQuestion> = ({ question, answerMode }) => {
-  console.log(question);
   const [selectedOptions, setSelectedOptions] = useState<number[][]>(
     question.attempt_ans !== "" ? JSON.parse(question.attempt_ans) : []
   );

@@ -8,7 +8,6 @@ const VerbalReasoning = ({
   questions: any;
   sectionData: any;
 }) => {
-  console.log(questions,sectionData, "jhg jgjhgjhgjhgj");
   return (
     <div className="p-10 text-[0.8rem]">
       <h3 className="font-bold text-[#414043] text-2xl  border-b border-[#B0AFAF] ">
