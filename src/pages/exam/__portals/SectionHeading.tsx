@@ -27,16 +27,6 @@ const SectionHeading = ({
     onExpire: () => sectionTimerExpired(),
   });
 
-  console.info(
-    currentSection,
-    totalSections,
-    currentQuestion,
-    totalQuestions,
-    sectionTime,
-    step,
-    "props"
-  );
-
   return (
     <div className="bg-[#f0e1e4] px-3 py1 flex justify-between items-center border-y border-t-2 border-t-[#882f5c] border-b-[#b4b4b4]">
       {step === 1 && (

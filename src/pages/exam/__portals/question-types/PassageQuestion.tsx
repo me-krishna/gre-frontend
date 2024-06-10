@@ -63,7 +63,7 @@ const PassageQuestion: FC<PassageQuestionProps> = ({
                 <div
                   dangerouslySetInnerHTML={{ __html: question.question }}
                 ></div>
-                <div className="">
+                <div >
                   {question?.non_blanks?.options.map(
                     (option: any, idx: number) => (
                       <div key={v4()} className="flex items-center gap-2">

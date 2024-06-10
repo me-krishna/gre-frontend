@@ -18,7 +18,6 @@ import ReportYourScore from "./__portals/ReportYourScore";
 import PracticeTestResults from "./__portals/PracticeTestResults";
 import { error } from "../../lib/notify";
 import SectionFineshed from "./__portals/SectionFineshed";
-import { set } from "react-hook-form";
 
 const Exam = () => {
   const navigate = useNavigate();
@@ -26,7 +25,7 @@ const Exam = () => {
   const [step, setStep] = useState(1);
   const [noOfSections, setNoOfSections] = useState<any[]>([]);
   const [sectionDetails, setSectionDetails] = useState<any>({});
-  const [isThisAQuestion, setIsThisAQuestion] = useState<boolean>(false);
+  const [isThisAQuestion, setIsThisAQuestion] = useState<boolean>(true);
   const [questionData, setQuestionData] = useState<any>({});
   const [currentSection, setCurrentSection] = useState<any>({});
   const [allQuestions, setAllQuestions] = useState<any[]>([]);
@@ -43,21 +42,12 @@ const Exam = () => {
       if (status === 200) {
         setNoOfSections(data.data.testSections);
         setSectionDetails(data.data.testDetails);
-        if (data.data.testDetails.last_question === null) {
-          setStep(1);
-          setIsThisAQuestion(true);
-          setCurrentQuestion(0);
-          setQuestionData(allQuestions[0]);
-          updateExamSection({
-            last_question: allQuestions[0].qid,
-          });
-          const currentQuestionSection = allQuestions[0]?.question_section_id;
-          const currentSectionq = data.data.testSections.find(
-            (item: any) => item.section_id === currentQuestionSection
-          );
-          if (currentSectionq) {
-            setCurrentSection(currentSectionq);
-          }
+        if (
+          data.data.testDetails?.last_question === null ||
+          data.data.testDetails?.last_question === ""
+        ) {
+          setStep(11);
+          setIsThisAQuestion(false);
         } else {
           let c = allQuestions.findIndex(
             (e: any, i: number) =>
@@ -161,8 +151,34 @@ const Exam = () => {
   const actionBtnClick = (name: string, id: number) => {
     if (name === "Continue") {
       if (step !== 7) {
-        if (step === 1) {
+        if (step === 10) {
           setIsThisAQuestion(false);
+          setStep(2);
+          setCurrentQuestion(0);
+
+          const nextQuestionIndex = currentQuestion + 1;
+          const nextQuestion = allQuestions[nextQuestionIndex];
+
+          setCurrentQuestion(nextQuestionIndex);
+          setQuestionData(nextQuestion);
+          updateExamSection({
+            last_question: nextQuestion.qid,
+          });
+        } else if (step === 11) {
+          setStep(1);
+          setIsThisAQuestion(true);
+          setQuestionData(allQuestions[0]);
+          setCurrentQuestion(0);
+          const currentQuestionSection = allQuestions[0]?.question_section_id;
+          const currentSectionq = noOfSections.find(
+            (item: any) => item.section_id === currentQuestionSection
+          );
+          if (currentSectionq) {
+            setCurrentSection(currentSectionq);
+          }
+          updateExamSection({
+            last_question: allQuestions[0].qid,
+          });
         } else if (step === 3) {
           setStep(2);
           setCurrentQuestion(0);
@@ -296,7 +312,16 @@ const Exam = () => {
     );
   };
 
-  const currentSectionTimeExpires = () => {};
+  const currentSectionTimeExpires = () => {
+    let lastSection = noOfSections[noOfSections.length - 1];
+    if (lastSection?.section_id === questionData?.question_section_id) {
+      setStep(7);
+      setIsThisAQuestion(false);
+    } else {
+      // setStep(10);
+      // setIsThisAQuestion(false);
+    }
+  };
 
   return (
     <div className="flex justify-center h-screen w-screen bg-[#00000057]">
@@ -321,7 +346,7 @@ const Exam = () => {
                   (res) => res?.section_id === questionData?.section_id
                 ).length
               }
-              sectionTime={10}
+              sectionTime={parseInt(currentSection?.duration) * 60}
               step={step}
               sectionTimerExpired={currentSectionTimeExpires}
             />
@@ -331,7 +356,6 @@ const Exam = () => {
             <div>
               {!isThisAQuestion && (
                 <>
-                  {step === 1 && <GeneralInfo />}
                   {step === 2 && (
                     <SectionInfo
                       question={questionData}
@@ -348,6 +372,7 @@ const Exam = () => {
                   {step === 8 && <ReportYourScore />}
                   {step === 9 && <PracticeTestResults />}
                   {step === 10 && <SectionFineshed />}
+                  {step === 11 && <GeneralInfo />}
                 </>
               )}
               {isThisAQuestion && (

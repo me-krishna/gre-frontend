@@ -29,8 +29,8 @@ const NonBlanksQuestion: FC<NonBlanksQuestionProps> = ({
   return (
     <div className="h-full w-full flex justify-center items-center text-[#303030]">
       <div className="font-light">
-        <div dangerouslySetInnerHTML={{ __html: question.question }}></div>
-        <div className="">
+        <div className="text-center font-semibold" dangerouslySetInnerHTML={{ __html: question.question }}></div>
+        <div >
           {question?.non_blanks?.options.map((option: any, idx: number) => (
             <div key={v4()} className="flex items-center gap-2">
               <input

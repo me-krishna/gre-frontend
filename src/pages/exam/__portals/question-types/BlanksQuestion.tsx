@@ -41,7 +41,7 @@ const BlanksQuestion: FC<IBlanksQuestion> = ({
     <div className="h-full flex justify-center items-center text-[#303030]">
       <div className="font-light">
         <div
-          className="mb-5"
+          className="mb-5 text-center font-semibold"
           dangerouslySetInnerHTML={{ __html: question.question }}
         ></div>
         <div className="flex gap-2 justify-center w-full">

@@ -187,7 +187,7 @@ const ExamHeader: React.FC<Props> = ({
     const buttons =
       isThisQuestion === true
         ? [1, 2, 4, 6, 8, 9]
-        : step === 2
+        : step === 2 || step === 11
         ? [10]
         : step === 6
         ? [7, 11]
@@ -214,7 +214,7 @@ const ExamHeader: React.FC<Props> = ({
           <div className="flex items-center justify-center gap-3">
             <img
               src="/images/logos/logo.png"
-              className="h-[50px] w-1/2 md:w-1/4"
+              className="w-40 rounded-md p-2 bg-[#f0f8ff]"
               alt="Dr Raju's Education Academy Logo"
             />
             <h2 className="capitalize text-white font-medium text-[15px] ">
