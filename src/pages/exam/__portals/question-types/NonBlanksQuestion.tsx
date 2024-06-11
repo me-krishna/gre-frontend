@@ -13,7 +13,9 @@ const NonBlanksQuestion: FC<NonBlanksQuestionProps> = ({
   AttemptAnsUpdate,
 }) => {
   const [selectedOptions, setSelectedOptions] = useState<number[]>(
-    question.attempt_ans !== "" ? JSON.parse(question.attempt_ans) : []
+    question.attempt_ans !== "" && question.attempt_ans !== null
+      ? JSON.parse(question.attempt_ans)
+      : []
   );
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +45,10 @@ const NonBlanksQuestion: FC<NonBlanksQuestionProps> = ({
   return (
     <div className="h-full w-full flex justify-center items-center text-[#303030]">
       <div className="font-light">
-        <div className="text-center font-semibold" dangerouslySetInnerHTML={{ __html: question.question }}></div>
+        <div
+          className="text-center font-semibold"
+          dangerouslySetInnerHTML={{ __html: question.question }}
+        ></div>
         <div>
           {question?.non_blanks?.options.map((option: any, idx: number) => (
             <div key={v4()} className="flex items-center gap-2">

@@ -69,7 +69,7 @@ const Dashboard: React.FC = () => {
                 <h1 className="text-3xl font-semibold text-p1-900 mb-3">
                   Total Tests
                 </h1>
-                {tests.length > 0 && (
+                {tests?.length > 0 && (
                   <Table className="min-w-[700px]">
                     <Table.Head>
                       <Table.HeadCell>S.NO</Table.HeadCell>
@@ -89,48 +89,103 @@ const Dashboard: React.FC = () => {
                             {!test?.attempted && (
                               <button
                                 disabled={takeTestBtn}
-                                className="py-1 rounded bg-p1-900 text-p1-200 px-3 hover:bg-opacity-90"
+                                className="py-2 rounded bg-p1-900 text-p1-100 px-3 hover:bg-opacity-90"
                                 onClick={() => takeTest(test?.uuid)}
                               >
                                 Take Test
                               </button>
                             )}
+
                             {test?.attempted === true &&
-                              test?.attemptedData?.test_status === 0 && (
-                                <button
-                                  onClick={() =>
-                                    continueTest(
-                                      test?.attemptedData?.section_id
-                                    )
-                                  }
-                                  className="py-1 rounded bg-p2-500 text-p2-100 px-3 hover:bg-opacity-90"
-                                >
-                                  Continue Test
-                                </button>
-                              )}
+                            test?.attemptedData?.length === 1 &&
+                            test?.attemptedData[0]?.test_status === 1 ? (
+                              <button
+                                disabled={takeTestBtn}
+                                className="py-2 rounded bg-p2-900 text-p2-200 px-3 hover:bg-opacity-90"
+                                onClick={() => takeTest(test?.uuid)}
+                              >
+                                Retake Test
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() =>
+                                  continueTest(
+                                    test?.attemptedData[0]?.section_id
+                                  )
+                                }
+                                className="py-2 rounded bg-p2-500 text-p2-100 px-3 hover:bg-opacity-90"
+                              >
+                                Continue Test
+                              </button>
+                            )}
+
                             {test?.attempted === true &&
-                              test?.attemptedData?.test_status === 1 && (
-                                <Badge color="green" className="inline-block">
-                                  Test Completed
-                                </Badge>
+                              test?.attemptedData?.length > 1 && (
+                                <>
+                                  {test?.attempted === true &&
+                                    test?.attemptedData?.some(
+                                      (item: any) => item?.test_status === 0
+                                    ) && (
+                                      <button
+                                        onClick={() =>
+                                          continueTest(
+                                            test?.attemptedData[
+                                              test?.attemptedData.length - 1
+                                            ]?.section_id
+                                          )
+                                        }
+                                        className="py-2 rounded bg-p2-500 text-p2-100 px-3 hover:bg-opacity-90"
+                                      >
+                                        Continue Test
+                                      </button>
+                                    )}
+                                  {test?.attempted === true &&
+                                    test?.attemptedData?.every(
+                                      (item: any) => item?.test_status === 1
+                                    ) && (
+                                      <Badge
+                                        color="green"
+                                        className="inline-block"
+                                      >
+                                        Test Completed
+                                      </Badge>
+                                    )}
+                                </>
                               )}
                           </Table.Cell>
                           <Table.Cell>
-                            {test?.attemptedData?.test_status === 1 ? (
-                              <Badge
-                                color="indigo"
-                                className="inline-block cursor-pointer"
-                                onClick={() =>
-                                  reviewResult(test?.attemptedData?.section_id)
-                                }
-                              >
-                                Review Your Test
-                              </Badge>
-                            ) : (
-                              <Badge color="pink" className="inline-block">
-                                -
-                              </Badge>
-                            )}
+                            <>
+                              {test?.attempted === true ? (
+                                test?.attemptedData.map(
+                                  (item: any, idx: number) => {
+                                    return item?.test_status === 1 ? (
+                                      <button
+                                        key={uuidv4()}
+                                        color="btn"
+                                        className="py-2 shadow-sm w-full rounded bg-s1-600 text-white px-3 hover:bg-opacity-90 mb-2"
+                                        onClick={() =>
+                                          reviewResult(item.section_id)
+                                        }
+                                      >
+                                        Review Your Attempt {idx + 1}
+                                      </button>
+                                    ) : (
+                                      <Badge
+                                        key={uuidv4()}
+                                        color="pink"
+                                        className="inline-block py-2 w-full text-center"
+                                      >
+                                        Wating for Attempt {idx + 1}
+                                      </Badge>
+                                    );
+                                  }
+                                )
+                              ) : (
+                                <Badge color="pink" className="inline-block">
+                                  -
+                                </Badge>
+                              )}
+                            </>
                           </Table.Cell>
                         </Table.Row>
                       ))}

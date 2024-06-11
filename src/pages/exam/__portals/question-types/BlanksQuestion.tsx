@@ -12,7 +12,9 @@ const BlanksQuestion: FC<IBlanksQuestion> = ({
   AttemptAnsUpdate,
 }) => {
   const [selectedOptions, setSelectedOptions] = useState<number[][]>(
-    question?.attempt_ans !== "" ? JSON.parse(question.attempt_ans) : []
+    question.attempt_ans !== "" && question.attempt_ans !== null
+      ? JSON.parse(question.attempt_ans)
+      : []
   );
 
   const handleOptionChange = (blankNo: number, optionNo: number) => {
@@ -63,7 +65,7 @@ const BlanksQuestion: FC<IBlanksQuestion> = ({
                 >
                   <span
                     onClick={() => handleOptionChange(idx + 1, idxi + 1)}
-                    className={`cursor-pointer px-3 min-w-[100px] max-w-[200px]`}
+                    className={`cursor-pointer px-3 min-w-[100px] w-full max-w-[200px]`}
                     dangerouslySetInnerHTML={{ __html: option }}
                   ></span>
                 </div>

@@ -13,7 +13,7 @@ const PassageQuestion: FC<PassageQuestionProps> = ({
   AttemptAnsUpdate,
 }) => {
   const [selectedOptions, setSelectedOptions] = useState<number[]>(
-    question.attempt_ans !== "" ? JSON.parse(question.attempt_ans) : []
+    question.attempt_ans !== "" && question.attempt_ans !== null ? JSON.parse(question.attempt_ans) : []
   );
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,6 +61,7 @@ const PassageQuestion: FC<PassageQuestionProps> = ({
             <div>
               <div className="font-light">
                 <div
+                  className="text-start font-semibold"
                   dangerouslySetInnerHTML={{ __html: question.question }}
                 ></div>
                 <div >
