@@ -2,7 +2,7 @@
   "name": "exam",
   "version": "0.1.0",
   "private": true,
-  "homepage": "/gret",
+  "homepage": "/practice",
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
     "axios": "^1.6.8",
