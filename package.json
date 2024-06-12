@@ -2,7 +2,7 @@
   "name": "exam",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://drrajus.com/gret",
+  "homepage": "/gret",
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
     "axios": "^1.6.8",
