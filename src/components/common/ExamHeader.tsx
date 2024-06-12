@@ -213,7 +213,7 @@ const ExamHeader: React.FC<Props> = ({
         <div className="flex flex-wrap items-center justify-between mx-auto py-1 px-2">
           <div className="flex items-center justify-center gap-3">
             <img
-              src="/images/logos/logo.png"
+              src={`${process.env.PUBLIC_URL}/images/logos/logo.png`}
               className="w-40 rounded-md p-2 bg-[#f0f8ff]"
               alt="Dr Raju's Education Academy Logo"
             />

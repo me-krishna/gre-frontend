@@ -46,7 +46,7 @@ const Header: FC = () => {
             className="flex items-center space-x-3 rtl:space-x-reverse"
           >
             <img
-              src="/images/logos/logo.png"
+              src={`${process.env.PUBLIC_URL}/images/logos/logo.png`}
               className="h-[50px] bg-black rounded-lg px-2 py-1"
               alt="Dr Raju's Education Academy Logo"
             />

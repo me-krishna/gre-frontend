@@ -75,7 +75,7 @@ const Login = () => {
   return (
     <section
       style={{
-        backgroundImage: "url(/images/bghome.png)",
+        backgroundImage: "url(./images/bghome.png)",
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
       }}
@@ -87,7 +87,7 @@ const Login = () => {
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <img
                 className="w-fill h-auto md:w-[80%] md:mx-auto"
-                src="/images/logos/logo.png"
+                src={`${process.env.PUBLIC_URL}/images/logos/logo.png`}
                 alt="logo"
               />
               <h1 className="text-xl font-bold leading-tight tracking-tight text-p1-800 md:text-2xl ">

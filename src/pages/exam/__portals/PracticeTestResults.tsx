@@ -97,7 +97,7 @@ const PracticeTestResults = () => {
                 <div className="flex justify-start gap-2">
                   <div className="w-[50%]">
                     <img
-                      src="/images/ptr.png"
+                      src={`${process.env.PUBLIC_URL}/images/ptr.png`}
                       alt="PTR"
                       className="w-[200px] h-auto p-3 rounded-md blur-[2px] "
                     />

@@ -31,7 +31,7 @@ useApi.interceptors.response.use((response) => {
     if (error.response.status === 401) {
       localStorage.clear();
       error("Session expired. Please login again.");
-      window.location.href = "/login";
+      window.location.href = process.env.PUBLIC_URL+"/login";
     } else {
       return Promise.reject(error.response.data);
     }

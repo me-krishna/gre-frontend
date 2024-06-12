@@ -96,27 +96,34 @@ const Dashboard: React.FC = () => {
                               </button>
                             )}
 
-                            {test?.attempted === true &&
-                            test?.attemptedData?.length === 1 &&
-                            test?.attemptedData[0]?.test_status === 1 ? (
-                              <button
-                                disabled={takeTestBtn}
-                                className="py-2 rounded bg-p2-900 text-p2-200 px-3 hover:bg-opacity-90"
-                                onClick={() => takeTest(test?.uuid)}
-                              >
-                                Retake Test
-                              </button>
-                            ) : (
-                              <button
-                                onClick={() =>
-                                  continueTest(
-                                    test?.attemptedData[0]?.section_id
-                                  )
-                                }
-                                className="py-2 rounded bg-p2-500 text-p2-100 px-3 hover:bg-opacity-90"
-                              >
-                                Continue Test
-                              </button>
+                            {test?.attempted === true && (
+                              <>
+                                {test?.attemptedData?.length === 1 && (
+                                  <>
+                                    {test?.attemptedData[0]?.test_status ===
+                                    1 ? (
+                                      <button
+                                        disabled={takeTestBtn}
+                                        className="py-2 rounded bg-p2-900 text-p2-200 px-3 hover:bg-opacity-90"
+                                        onClick={() => takeTest(test?.uuid)}
+                                      >
+                                        Retake Test
+                                      </button>
+                                    ) : (
+                                      <button
+                                        onClick={() =>
+                                          continueTest(
+                                            test?.attemptedData[0]?.section_id
+                                          )
+                                        }
+                                        className="py-2 rounded bg-p2-500 text-p2-100 px-3 hover:bg-opacity-90"
+                                      >
+                                        Continue Test
+                                      </button>
+                                    )}
+                                  </>
+                                )}
+                              </>
                             )}
 
                             {test?.attempted === true &&
