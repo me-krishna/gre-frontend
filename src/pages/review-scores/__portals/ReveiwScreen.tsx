@@ -5,9 +5,15 @@ import { FaCheck } from "react-icons/fa6";
 import { IoCaretDown } from "react-icons/io5";
 interface ReviewScreenProps {
   questionData: any;
+  currentQuestion: number;
+  goToQuestion: (idx: number) => void;
 }
 
-const ReviewScreen: FC<ReviewScreenProps> = ({ questionData }) => {
+const ReviewScreen: FC<ReviewScreenProps> = ({
+  questionData,
+  currentQuestion,
+  goToQuestion,
+}) => {
   const [data, setData] = useState<any[]>([]);
   const [isDecending, setIsDecending] = useState<boolean>(false);
   const [tableOne, setTableOne] = useState<any[]>([]);
@@ -16,6 +22,7 @@ const ReviewScreen: FC<ReviewScreenProps> = ({ questionData }) => {
     questionData.qid
   );
 
+  const [gotoQuestion, setGotoQuestion] = useState<number>(currentQuestion);
 
   const getData = async () => {
     try {
@@ -44,6 +51,11 @@ const ReviewScreen: FC<ReviewScreenProps> = ({ questionData }) => {
     }
   };
 
+  const getGoToQuestion = (idx: number) => {
+    goToQuestion(idx);
+    setGotoQuestion(idx);
+  };
+
   const sortData = () => {
     const sortedData = data.sort((a, b) => {
       if (isDecending) {
@@ -63,6 +75,7 @@ const ReviewScreen: FC<ReviewScreenProps> = ({ questionData }) => {
   };
 
   useEffect(() => {
+    setGotoQuestion(currentQuestion);
     getData();
   }, []);
 
@@ -137,7 +150,12 @@ const ReviewScreen: FC<ReviewScreenProps> = ({ questionData }) => {
                 <tbody>
                   {tableOne.map((item, index) => (
                     <tr
-                      onClick={() => setActiveQuestion(item.id)}
+                      onClick={() => {
+                        setActiveQuestion(item.id);
+                        getGoToQuestion(
+                          isDecending ? data.length - index : index + 1
+                        );
+                      }}
                       key={index}
                       className={`${
                         item.id === activeQuestion
@@ -202,7 +220,14 @@ const ReviewScreen: FC<ReviewScreenProps> = ({ questionData }) => {
                 <tbody>
                   {tableTwo.map((item, index) => (
                     <tr
-                      onClick={() => setActiveQuestion(item.id)}
+                      onClick={() => {
+                        setActiveQuestion(item.id);
+                        getGoToQuestion(
+                          isDecending
+                            ? data.length - tableOne.length - index
+                            : tableOne.length + (index + 1)
+                        );
+                      }}
                       key={index}
                       className={`${
                         item.id === activeQuestion
@@ -213,8 +238,6 @@ const ReviewScreen: FC<ReviewScreenProps> = ({ questionData }) => {
                       }`}
                     >
                       <td className="text-center">
-                        {/* {isDecending ? daxsta.length - index : index + 1}
-                        {tableOne.length + (index + 1)} */}
                         {isDecending
                           ? data.length - tableOne.length - index
                           : tableOne.length + (index + 1)}

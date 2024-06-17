@@ -15,7 +15,6 @@ import ReportYourScore from "./__portals/ReportYourScore";
 import PracticeTestResults from "./__portals/PracticeTestResults";
 import ProgressSummary from "./__portals/ProgressSummary";
 import ExamHeader from "./ExamHeader";
-import QuestionExplination from "./__portals/question-types/QuestionExplination";
 
 const Exam = () => {
   const navigate = useNavigate();
@@ -38,10 +37,12 @@ const Exam = () => {
 
       const { status, data } = res;
       if (status === 200) {
+        console.log(allQuestions, "all questions -----🫐");
         setNoOfSections(data.data.testSections);
         setSectionDetails(data.data.testDetails);
         setCurrentQuestion(0);
         setQuestionData(allQuestions[0]);
+        console.log(allQuestions[0], "data-----");
       }
     } catch (error) {
       console.error(error, "error");
@@ -84,13 +85,18 @@ const Exam = () => {
     setCurrentQuestionAns(true);
     if (name === "Continue") {
       if (step !== 7) {
-        setCurrentQuestion(0);
-        const nextQuestionIndex = currentQuestion + 1;
-        const nextQuestion = allQuestions[nextQuestionIndex];
-        setCurrentQuestion(nextQuestionIndex);
-        setQuestionData(nextQuestion);
-        setIsThisAQuestion(true);
-        setStep(1);
+        if (step !== 10 && step !== 9 && step !== 8) {
+          setCurrentQuestion(0);
+          const nextQuestionIndex = currentQuestion + 1;
+          const nextQuestion = allQuestions[nextQuestionIndex];
+          setCurrentQuestion(nextQuestionIndex);
+          setQuestionData(nextQuestion);
+          setIsThisAQuestion(true);
+          setStep(1);
+        } else {
+          setIsThisAQuestion(true);
+          setStep(1);
+        }
       } else {
         navigate("/");
       }
@@ -116,7 +122,7 @@ const Exam = () => {
       const prevQuestionIndex = currentQuestion - 1;
       const prevQuestion = allQuestions[prevQuestionIndex];
       if (
-        prevQuestionIndex > 0 &&
+        prevQuestionIndex >= 0 &&
         prevQuestion.section_id === questionData.section_id
       ) {
         setCurrentQuestion(prevQuestionIndex);
@@ -145,6 +151,9 @@ const Exam = () => {
       } else {
         navigate("/");
       }
+    } else if (name === "Go to Question") {
+      setIsThisAQuestion(true);
+      setStep(1);
     }
   };
 
@@ -181,6 +190,12 @@ const Exam = () => {
     setCurrentQuestionAns(a);
   };
 
+  const goToQuestion = (question: number) => {
+    console.log(currentQuestionNumberOnSection(), "question");
+    // setCurrentQuestion(question);
+    // setQuestionData(allQuestions[question]);
+  };
+
   return (
     <div className="flex justify-center h-screen w-screen bg-[#00000057]">
       <div className="lg:w-[66vw] md:w-[79vw] h-[80vh] bg-white">
@@ -214,7 +229,11 @@ const Exam = () => {
                       {step === 4 && <ExitSection />}
                       {step === 5 && <QuitAndSave />}
                       {step === 6 && (
-                        <ReviewScreen questionData={questionData} />
+                        <ReviewScreen
+                          questionData={questionData}
+                          currentQuestion={currentQuestion}
+                          goToQuestion={goToQuestion}
+                        />
                       )}
                       {step === 7 && <EndOfTest />}
                       {step === 8 && <ReportYourScore />}
@@ -286,9 +305,6 @@ const Exam = () => {
                               </div>
                             </div>
                           )}
-                        <QuestionExplination
-                          explination={questionData?.explination}
-                        />
                       </div>
                     </>
                   )}

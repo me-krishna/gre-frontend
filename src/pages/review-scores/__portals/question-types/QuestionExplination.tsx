@@ -6,7 +6,7 @@ interface QuestionExplinationProps {
 
 const QuestionExplination: FC<QuestionExplinationProps> = ({ explination }) => {
   return (
-    <div>
+    <div className="w-full mb-3">
       <div className="bg-p1-50 p-3 border-2 border-p1-500 rounded-lg m-3 pb-4">
         <h2 className="underline font-bold">Explanation:</h2>
         <div

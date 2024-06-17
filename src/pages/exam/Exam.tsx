@@ -243,7 +243,7 @@ const Exam = () => {
       const prevQuestionIndex = currentQuestion - 1;
       const prevQuestion = allQuestions[prevQuestionIndex];
       if (
-        prevQuestionIndex > 0 &&
+        prevQuestionIndex >= 0 &&
         prevQuestion.section_id === questionData.section_id
       ) {
         setCurrentQuestion(prevQuestionIndex);
