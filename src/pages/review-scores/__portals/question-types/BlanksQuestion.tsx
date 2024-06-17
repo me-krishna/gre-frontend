@@ -12,8 +12,6 @@ const BlanksQuestion: FC<IBlanksQuestion> = ({ question, answerMode }) => {
     question.attempt_ans !== "" ? JSON.parse(question.attempt_ans) : []
   );
 
-  console.log(question);
-
   useEffect(() => {
     if (answerMode === true) {
       setSelectedOptions(

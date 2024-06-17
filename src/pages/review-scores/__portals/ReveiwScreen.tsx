@@ -22,8 +22,6 @@ const ReviewScreen: FC<ReviewScreenProps> = ({
     questionData.qid
   );
 
-  const [gotoQuestion, setGotoQuestion] = useState<number>(currentQuestion);
-
   const getData = async () => {
     try {
       const res = await useApi.post(
@@ -53,15 +51,14 @@ const ReviewScreen: FC<ReviewScreenProps> = ({
 
   const getGoToQuestion = (idx: number) => {
     goToQuestion(idx);
-    setGotoQuestion(idx);
   };
 
   const sortData = () => {
     const sortedData = data.sort((a, b) => {
       if (isDecending) {
-        return a.id - b.id;
-      } else {
         return b.id - a.id;
+      } else {
+        return a.id - b.id;
       }
     });
     setData(sortedData);
@@ -75,7 +72,7 @@ const ReviewScreen: FC<ReviewScreenProps> = ({
   };
 
   useEffect(() => {
-    setGotoQuestion(currentQuestion);
+    getGoToQuestion(questionData.qid);
     getData();
   }, []);
 
@@ -152,9 +149,7 @@ const ReviewScreen: FC<ReviewScreenProps> = ({
                     <tr
                       onClick={() => {
                         setActiveQuestion(item.id);
-                        getGoToQuestion(
-                          isDecending ? data.length - index : index + 1
-                        );
+                        getGoToQuestion(item.id);
                       }}
                       key={index}
                       className={`${
@@ -222,11 +217,7 @@ const ReviewScreen: FC<ReviewScreenProps> = ({
                     <tr
                       onClick={() => {
                         setActiveQuestion(item.id);
-                        getGoToQuestion(
-                          isDecending
-                            ? data.length - tableOne.length - index
-                            : tableOne.length + (index + 1)
-                        );
+                        getGoToQuestion(item.id);
                       }}
                       key={index}
                       className={`${

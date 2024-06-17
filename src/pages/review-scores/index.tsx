@@ -37,12 +37,10 @@ const Exam = () => {
 
       const { status, data } = res;
       if (status === 200) {
-        console.log(allQuestions, "all questions -----🫐");
         setNoOfSections(data.data.testSections);
         setSectionDetails(data.data.testDetails);
         setCurrentQuestion(0);
         setQuestionData(allQuestions[0]);
-        console.log(allQuestions[0], "data-----");
       }
     } catch (error) {
       console.error(error, "error");
@@ -191,9 +189,9 @@ const Exam = () => {
   };
 
   const goToQuestion = (question: number) => {
-    console.log(currentQuestionNumberOnSection(), "question");
-    // setCurrentQuestion(question);
-    // setQuestionData(allQuestions[question]);
+    let index = allQuestions.findIndex((item: any) => item.qid === question);
+    setCurrentQuestion(index);
+    setQuestionData(allQuestions[index]);
   };
 
   return (
