@@ -3,11 +3,18 @@ import { error } from "../../../lib/notify";
 import { FC, useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa6";
 import { IoCaretDown } from "react-icons/io5";
+
 interface ReviewScreenProps {
   questionData: any;
+  currentQuestion: number;
+  goToQuestion: (idx: number) => void;
 }
 
-const ReviewScreen: FC<ReviewScreenProps> = ({ questionData }) => {
+const ReviewScreen: FC<ReviewScreenProps> = ({
+  questionData,
+  currentQuestion,
+  goToQuestion,
+}) => {
   const [data, setData] = useState<any[]>([]);
   const [isDecending, setIsDecending] = useState<boolean>(false);
   const [tableOne, setTableOne] = useState<any[]>([]);
@@ -16,6 +23,9 @@ const ReviewScreen: FC<ReviewScreenProps> = ({ questionData }) => {
     questionData.qid
   );
 
+  const getGoToQuestion = (idx: number) => {
+    goToQuestion(idx);
+  };
 
   const getData = async () => {
     try {
@@ -63,6 +73,7 @@ const ReviewScreen: FC<ReviewScreenProps> = ({ questionData }) => {
   };
 
   useEffect(() => {
+    getGoToQuestion(questionData.qid);
     getData();
   }, []);
 
@@ -137,7 +148,10 @@ const ReviewScreen: FC<ReviewScreenProps> = ({ questionData }) => {
                 <tbody>
                   {tableOne.map((item, index) => (
                     <tr
-                      onClick={() => setActiveQuestion(item.id)}
+                      onClick={() => {
+                        setActiveQuestion(item.id);
+                        getGoToQuestion(item.id);
+                      }}
                       key={index}
                       className={`${
                         item.id === activeQuestion
@@ -202,7 +216,10 @@ const ReviewScreen: FC<ReviewScreenProps> = ({ questionData }) => {
                 <tbody>
                   {tableTwo.map((item, index) => (
                     <tr
-                      onClick={() => setActiveQuestion(item.id)}
+                      onClick={() => {
+                        setActiveQuestion(item.id);
+                        getGoToQuestion(item.id);
+                      }}
                       key={index}
                       className={`${
                         item.id === activeQuestion

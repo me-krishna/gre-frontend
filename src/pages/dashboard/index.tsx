@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import { error, info } from "../../lib/notify";
 import { toast } from "react-toastify";
+
 const Dashboard: React.FC = () => {
   const [tests, setTests] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -98,65 +99,51 @@ const Dashboard: React.FC = () => {
 
                             {test?.attempted === true && (
                               <>
-                                {test?.attemptedData?.length === 1 && (
-                                  <>
-                                    {test?.attemptedData[0]?.test_status ===
-                                    1 ? (
-                                      <button
-                                        disabled={takeTestBtn}
-                                        className="py-2 rounded bg-p2-900 text-p2-200 px-3 hover:bg-opacity-90"
-                                        onClick={() => takeTest(test?.uuid)}
-                                      >
-                                        Retake Test
-                                      </button>
-                                    ) : (
-                                      <button
-                                        onClick={() =>
-                                          continueTest(
-                                            test?.attemptedData[0]?.section_id
-                                          )
-                                        }
-                                        className="py-2 rounded bg-p2-500 text-p2-100 px-3 hover:bg-opacity-90"
-                                      >
-                                        Continue Test
-                                      </button>
-                                    )}
-                                  </>
-                                )}
+                                {test?.attemptedData?.length === 1 &&
+                                  test?.attemptedData[0]?.test_status !== 1 && (
+                                    <button
+                                      onClick={() =>
+                                        continueTest(
+                                          test?.attemptedData[0]?.section_id
+                                        )
+                                      }
+                                      className="py-2 rounded bg-p2-500 text-p2-100 px-3 hover:bg-opacity-90"
+                                    >
+                                      Continue Test
+                                    </button>
+                                  )}
                               </>
                             )}
 
                             {test?.attempted === true &&
-                              test?.attemptedData?.length > 1 && (
+                              test?.attemptedData?.length === 1 && (
                                 <>
-                                  {test?.attempted === true &&
-                                    test?.attemptedData?.some(
-                                      (item: any) => item?.test_status === 0
-                                    ) && (
-                                      <button
-                                        onClick={() =>
-                                          continueTest(
-                                            test?.attemptedData[
-                                              test?.attemptedData.length - 1
-                                            ]?.section_id
-                                          )
-                                        }
-                                        className="py-2 rounded bg-p2-500 text-p2-100 px-3 hover:bg-opacity-90"
-                                      >
-                                        Continue Test
-                                      </button>
-                                    )}
-                                  {test?.attempted === true &&
-                                    test?.attemptedData?.every(
-                                      (item: any) => item?.test_status === 1
-                                    ) && (
-                                      <Badge
-                                        color="green"
-                                        className="inline-block"
-                                      >
-                                        Test Completed
-                                      </Badge>
-                                    )}
+                                  {test?.attemptedData?.some(
+                                    (item: any) => item?.test_status === 0
+                                  ) && (
+                                    <button
+                                      onClick={() =>
+                                        continueTest(
+                                          test?.attemptedData[
+                                            test?.attemptedData.length - 1
+                                          ]?.section_id
+                                        )
+                                      }
+                                      className="py-2 rounded bg-p2-500 text-p2-100 px-3 hover:bg-opacity-90"
+                                    >
+                                      Continue Test
+                                    </button>
+                                  )}
+                                  {test?.attemptedData?.every(
+                                    (item: any) => item?.test_status === 1
+                                  ) && (
+                                    <Badge
+                                      color="green"
+                                      className="inline-block"
+                                    >
+                                      Test Completed
+                                    </Badge>
+                                  )}
                                 </>
                               )}
                           </Table.Cell>
@@ -169,20 +156,20 @@ const Dashboard: React.FC = () => {
                                       <button
                                         key={uuidv4()}
                                         color="btn"
-                                        className="py-2 shadow-sm w-full rounded bg-s1-600 text-white px-3 hover:bg-opacity-90 mb-2"
+                                        className="py-1 shadow-sm w-full rounded bg-s1-600 text-white px-3 hover:bg-opacity-90 mb-2"
                                         onClick={() =>
                                           reviewResult(item.section_id)
                                         }
                                       >
-                                        Review Your Attempt {idx + 1}
+                                        Review Your Attempt
                                       </button>
                                     ) : (
                                       <Badge
                                         key={uuidv4()}
                                         color="pink"
-                                        className="inline-block py-2 w-full text-center"
+                                        className="inline-block py-1 w-full text-center"
                                       >
-                                        Wating for Attempt {idx + 1}
+                                        Wating for Result
                                       </Badge>
                                     );
                                   }

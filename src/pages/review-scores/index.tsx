@@ -196,7 +196,7 @@ const Exam = () => {
 
   return (
     <div className="flex justify-center h-screen w-screen bg-[#00000057]">
-      <div className="lg:w-[66vw] md:w-[79vw] h-[80vh] bg-white">
+      <div className="h-full w-full overflow-auto bg-white">
         {!loading && (
           <>
             <ExamHeader
@@ -241,7 +241,7 @@ const Exam = () => {
                   )}
                   {isThisAQuestion && (
                     <>
-                      <div className="flex flex-col justify-between h-[71vh] overflow-auto border border-[#5e5e5e] p-1">
+                      <div className="flex flex-col justify-between overflow-auto border border-[#5e5e5e] p-1">
                         {questionData?.question_config?.isThereHeaderInfo ===
                           true &&
                           !(

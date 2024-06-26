@@ -43,7 +43,7 @@ const NonBlanksQuestion: FC<NonBlanksQuestionProps> = ({
   }, []);
 
   return (
-    <div className="h-full w-full flex justify-center items-center text-[#303030]">
+    <div className="h-full w-full flex justify-center items-center text-[#303030] h-screen">
       <div className="font-light">
         <div
           className="text-center font-semibold"

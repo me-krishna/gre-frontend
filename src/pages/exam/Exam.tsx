@@ -256,6 +256,10 @@ const Exam = () => {
       updateExamQuestionSection({
         marked: questionData.marked === 1 ? 0 : 1,
       });
+      setQuestionData((prev: any) => ({
+        ...prev,
+        marked: questionData.marked === 1 ? 0 : 1,
+      }))
     } else if (name === "Review") {
       setIsThisAQuestion(false);
       setStep(6);
@@ -277,6 +281,9 @@ const Exam = () => {
       }
     } else if (name === "Report Scores") {
       reportScoresSubmit();
+    } else if (name === "Go to Question") {
+      setIsThisAQuestion(true);
+      setStep(1);
     }
   };
 
@@ -323,9 +330,15 @@ const Exam = () => {
     }
   };
 
+  const goToQuestion = (question: number) => {
+    let index = allQuestions.findIndex((item: any) => item.qid === question);
+    setCurrentQuestion(index);
+    setQuestionData(allQuestions[index]);
+  };
+
   return (
     <div className="flex justify-center h-screen w-screen bg-[#00000057]">
-      <div className="lg:w-[60vw] md:w-[79vw] h-[80vh] bg-white">
+      <div className="bg-white w-full h-full">
         <ExamHeader
           isThisQuestion={isThisAQuestion}
           step={step}
@@ -335,7 +348,6 @@ const Exam = () => {
           currentSectionQuestionNumber={currentQuestionNumberOnSection()}
         />
         <>
-          {/* parseInt(currentSection?.duration) */}
           {parseInt(currentSection?.duration) > 0 && (
             <SectionHeading
               currentSection={questionData?.question_section_no}
@@ -367,7 +379,7 @@ const Exam = () => {
                   )}
                   {step === 4 && <ExitSection />}
                   {step === 5 && <QuitAndSave />}
-                  {step === 6 && <ReviewScreen questionData={questionData} />}
+                  {step === 6 && <ReviewScreen questionData={questionData}  currentQuestion={currentQuestion}  goToQuestion={goToQuestion} />}
                   {step === 7 && <EndOfTest />}
                   {step === 8 && <ReportYourScore />}
                   {step === 9 && <PracticeTestResults />}
@@ -376,7 +388,7 @@ const Exam = () => {
                 </>
               )}
               {isThisAQuestion && (
-                <div className="flex flex-col justify-between h-[71vh] overflow-auto border border-[#5e5e5e] p-1">
+                <div className="flex flex-col justify-between overflow-auto border border-[#a6a6a6] p-1 m-1 rounded-lg">
                   {questionData?.question_config?.isThereHeaderInfo === true &&
                     !(
                       questionData?.question_config?.question_type ===
@@ -390,7 +402,7 @@ const Exam = () => {
                         </div>
                       </div>
                     )}
-                  <div className="h-full">
+                  <div className="p-3">
                     {questionData?.question_config?.question_type === "type1" &&
                       questionData?.question_config
                         ?.isThisPassageHaveQuestion === "no" && (
