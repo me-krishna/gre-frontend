@@ -107,7 +107,7 @@ const Dashboard: React.FC = () => {
                                           test?.attemptedData[0]?.section_id
                                         )
                                       }
-                                      className="py-2 rounded bg-p2-500 text-p2-100 px-3 hover:bg-opacity-90"
+                                      className="py-1 rounded bg-p2-500 text-p2-100 px-3 hover:bg-opacity-90"
                                     >
                                       Continue Test
                                     </button>
@@ -118,22 +118,6 @@ const Dashboard: React.FC = () => {
                             {test?.attempted === true &&
                               test?.attemptedData?.length === 1 && (
                                 <>
-                                  {test?.attemptedData?.some(
-                                    (item: any) => item?.test_status === 0
-                                  ) && (
-                                    <button
-                                      onClick={() =>
-                                        continueTest(
-                                          test?.attemptedData[
-                                            test?.attemptedData.length - 1
-                                          ]?.section_id
-                                        )
-                                      }
-                                      className="py-2 rounded bg-p2-500 text-p2-100 px-3 hover:bg-opacity-90"
-                                    >
-                                      Continue Test
-                                    </button>
-                                  )}
                                   {test?.attemptedData?.every(
                                     (item: any) => item?.test_status === 1
                                   ) && (
