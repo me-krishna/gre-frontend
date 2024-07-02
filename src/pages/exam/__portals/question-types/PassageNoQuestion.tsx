@@ -18,7 +18,7 @@ const PassageNoQuestion: FC<PassageNoQuestionProps> = ({
   return (
     <div className="flex justify-center items-stretch w-full gap-1 overflow-auto ">
       <div
-        className="text-sm w-[50%] text-justify p-2 border border-[#6c757d] h-full"
+        className="text-sm w-[50%] text-justify p-2 border border-[#6c757d]"
         dangerouslySetInnerHTML={{ __html: question.passage }}
       ></div>
       <div className="w-[50%]">

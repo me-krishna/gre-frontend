@@ -8,6 +8,7 @@ interface IBlanksQuestion {
 }
 
 const BlanksQuestion: FC<IBlanksQuestion> = ({ question, answerMode }) => {
+  console.log("question", question);
   const [selectedOptions, setSelectedOptions] = useState<number[][]>(
     question.attempt_ans !== "" ? JSON.parse(question.attempt_ans) : []
   );
@@ -26,7 +27,7 @@ const BlanksQuestion: FC<IBlanksQuestion> = ({ question, answerMode }) => {
 
   return (
     <>
-      <div className="h-full flex justify-center items-center text-[#303030] h-screen">
+      <div className="flex justify-center text-[#303030]">
         <div className="font-light">
           <div className="flex justify-center flex-col items-center gap-2">
             <div

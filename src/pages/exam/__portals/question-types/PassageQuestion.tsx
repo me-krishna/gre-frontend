@@ -43,71 +43,69 @@ const PassageQuestion: FC<PassageQuestionProps> = ({
   }, []);
 
   return (
-    <div className="flex justify-center items-stretch w-full gap-1 m-1 ">
-      <div
-        className="text-sm w-1/2 text-justify p-2 border border-[#6c757d] rounded-tl rounded-b"
-        dangerouslySetInnerHTML={{ __html: question.passage }}
-      ></div>
-      <div className="w-1/2 p-1 border border-[#6c757d]">
-        <div className="h-full flex justify-between flex-col">
-          <div>
-            <div>
-              {question?.question_config?.isThereHeaderInfo === true && (
-                <div className="flex justify-center mb-3">
-                  <div className="bg-[#dddddd] p-2 px-3 rounded text-[13px]">
-                    {question?.question_config?.header_info}
-                  </div>
-                </div>
-              )}
-            </div>
-            <div>
-              <div className="font-light">
-                <div
-                  className="text-start font-semibold"
-                  dangerouslySetInnerHTML={{ __html: question.question }}
-                ></div>
-                <div>
-                  {question?.non_blanks?.options.map(
-                    (option: any, idx: number) => (
-                      <div key={v4()} className="flex items-center gap-2">
-                        <input
-                          name={question.question_id + "_options"}
-                          id={question.question_id + "_options" + idx}
-                          type={
-                            question.non_blanks.answer.length > 1
-                              ? "checkbox"
-                              : "radio"
-                          }
-                          checked={
-                            selectedOptions !== null &&
-                            selectedOptions?.includes(idx + 1)
-                          }
-                          value={idx + 1}
-                          onChange={handleOptionChange}
-                        />
-                        <label
-                          htmlFor={question.question_id + "_options" + idx}
-                          dangerouslySetInnerHTML={{
-                            __html: option,
-                          }}
-                        ></label>
-                      </div>
-                    )
-                  )}
-                </div>
-              </div>
+    <div>
+      <div>
+        {question?.question_config?.isThereHeaderInfo === true && (
+          <div className="flex justify-center mb-3">
+            <div className="bg-[#dddddd] p-2 px-3 rounded text-[13px]">
+              {question?.question_config?.header_info}
             </div>
           </div>
-          <div>
-            {question?.question_config?.isThereFooterInfo === true && (
-              <div className="flex justify-center mb-3">
-                <div className="bg-[#dddddd] p-2 px-3 rounded text-[13px]">
-                  {question?.question_config?.footer_info}
-                </div>
+        )}
+      </div>
+      <div className="flex justify-center items-stretch w-full gap-1 m-1 ">
+        <div
+          className="text-sm w-1/2 text-justify p-2 border border-[#6c757d] rounded-tl rounded-b"
+          dangerouslySetInnerHTML={{ __html: question.passage }}
+        ></div>
+        <div className="w-1/2 p-1 border border-[#6c757d]">
+          <div className="h-full flex justify-between flex-col">
+            <div className="font-light">
+              <div
+                className="text-start font-semibold mb-3"
+                dangerouslySetInnerHTML={{ __html: question.question }}
+              ></div>
+              <div>
+                {question?.non_blanks?.options.map(
+                  (option: any, idx: number) => (
+                    <div key={v4()} className="flex items-center gap-2">
+                      <input
+                        name={question.question_id + "_options"}
+                        id={question.question_id + "_options" + idx}
+                        type={
+                          question.non_blanks.answer.length > 1
+                            ? "checkbox"
+                            : "radio"
+                        }
+                        checked={
+                          selectedOptions !== null &&
+                          selectedOptions?.includes(idx + 1)
+                        }
+                        value={idx + 1}
+                        onChange={handleOptionChange}
+                      />
+                      <label
+                        htmlFor={question.question_id + "_options" + idx}
+                        dangerouslySetInnerHTML={{
+                          __html: option,
+                        }}
+                      ></label>
+                    </div>
+                  )
+                )}
               </div>
-            )}
+            </div>
           </div>
         </div>
+      </div>
+      <div>
+        {question?.question_config?.isThereFooterInfo === true && (
+          <div className="flex justify-center mb-3">
+            <div className="bg-[#dddddd] p-2 px-3 rounded text-[13px]">
+              {question?.question_config?.footer_info}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

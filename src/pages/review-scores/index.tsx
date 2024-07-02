@@ -241,7 +241,7 @@ const Exam = () => {
                   )}
                   {isThisAQuestion && (
                     <>
-                      <div className="flex flex-col justify-between overflow-auto border border-[#5e5e5e] p-1">
+                      <div className="flex flex-col justify-between overflow-auto p-1">
                         {questionData?.question_config?.isThereHeaderInfo ===
                           true &&
                           !(

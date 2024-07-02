@@ -388,7 +388,7 @@ const Exam = () => {
                 </>
               )}
               {isThisAQuestion && (
-                <div className="flex flex-col justify-between overflow-auto border border-[#a6a6a6] p-1 m-1 rounded-lg">
+                <div className="flex flex-col justify-between border-[#a6a6a6] p-1 m-1">
                   {questionData?.question_config?.isThereHeaderInfo === true &&
                     !(
                       questionData?.question_config?.question_type ===

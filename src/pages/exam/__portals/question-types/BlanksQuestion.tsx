@@ -40,7 +40,7 @@ const BlanksQuestion: FC<IBlanksQuestion> = ({
   }, []);
 
   return (
-    <div className="h-full flex justify-center items-center text-[#303030] h-screen">
+    <div className="flex justify-center text-[#303030]">
       <div className="font-light">
         <div
           className="mb-5 text-center font-semibold"
