@@ -8,11 +8,9 @@ interface IBlanksQuestion {
 }
 
 const BlanksQuestion: FC<IBlanksQuestion> = ({ question, answerMode }) => {
-  console.log("question", question);
   const [selectedOptions, setSelectedOptions] = useState<number[][]>(
     question.attempt_ans !== "" ? JSON.parse(question.attempt_ans) : []
   );
-
   useEffect(() => {
     if (answerMode === true) {
       setSelectedOptions(
@@ -20,7 +18,7 @@ const BlanksQuestion: FC<IBlanksQuestion> = ({ question, answerMode }) => {
       );
     } else {
       setSelectedOptions(
-        question?.correct_ans !== "" ? JSON.parse(question?.correct_ans) : []
+        question?.correct_ans !== "" ? JSON.parse(question?.correct_ans) : question?.blanks.map((res:any) => res?.answer)
       );
     }
   }, [answerMode, question]);

@@ -11,6 +11,8 @@ const NonBlanksQuestion: FC<NonBlanksQuestionProps> = ({
   question,
   answerMode,
 }) => {
+
+
   const [selectedOptions, setSelectedOptions] = useState<number[]>(
     question.attempt_ans !== "" ? JSON.parse(question.attempt_ans) : []
   );
@@ -22,13 +24,13 @@ const NonBlanksQuestion: FC<NonBlanksQuestionProps> = ({
       );
     } else {
       setSelectedOptions(
-        question.correct_ans !== "" ? JSON.parse(question.correct_ans) : []
+        question.correct_ans !== "" ? JSON.parse(question.correct_ans) : question?.non_blanks?.answer
       );
     }
   }, [answerMode, question]);
 
   return (
-    <div className="h-full w-full flex justify-center items-center text-[#303030] h-screen">
+    <div className="h-full w-full flex justify-center items-center text-[#303030]">
       <div className="font-light">
         <div className="flex justify-center flex-col items-center gap-2">
           <div

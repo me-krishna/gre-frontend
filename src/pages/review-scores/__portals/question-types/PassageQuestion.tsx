@@ -15,6 +15,8 @@ const PassageQuestion: FC<PassageQuestionProps> = ({
     question.attempt_ans !== "" ? JSON.parse(question.attempt_ans) : []
   );
 
+  console.log("PassageQuestion", question);
+
   useEffect(() => {
     if (answerMode === true) {
       setSelectedOptions(
@@ -22,7 +24,7 @@ const PassageQuestion: FC<PassageQuestionProps> = ({
       );
     } else {
       setSelectedOptions(
-        question.correct_ans !== "" ? JSON.parse(question.correct_ans) : []
+        question.correct_ans !== "" ? JSON.parse(question.correct_ans) : question?.non_blanks?.answer
       );
     }
   }, [answerMode, question]);
