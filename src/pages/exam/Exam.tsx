@@ -336,7 +336,6 @@ const Exam = () => {
     setQuestionData(allQuestions[index]);
   };
 
-  console.log("allQuestions", questionData);
 
   return (
     <div className="flex justify-center h-screen w-screen bg-[#00000057]">

@@ -11,21 +11,27 @@ const BlanksQuestion: FC<IBlanksQuestion> = ({
   CorrectAnsUpdate,
   AttemptAnsUpdate,
 }) => {
-  console.log("BlanksQuestion", question);
   const [selectedOptions, setSelectedOptions] = useState<number[][]>([]);
 
   const handleOptionChange = (blankNo: number, optionNo: number) => {
     setSelectedOptions((prevOptions: number[][]) => {
       const newOptions = [...(prevOptions ?? [])];
-      newOptions[blankNo - 1] = [optionNo];
+      question?.blanks[blankNo - 1].answer?.length > 1
+        ? (newOptions[blankNo - 1] = newOptions[blankNo - 1]?.includes(optionNo)
+            ? newOptions[blankNo - 1]?.filter((option) => option !== optionNo)
+            : [...(newOptions[blankNo - 1] ?? []), optionNo])
+        : (newOptions[blankNo - 1] = [optionNo]);
+
+      selectedOptions !== null &&
+        AttemptAnsUpdate(JSON.stringify(newOptions), question);
       return newOptions;
     });
   };
 
-  useEffect(() => {
-    selectedOptions !== null &&
-      AttemptAnsUpdate(JSON.stringify(selectedOptions), question);
-  }, [selectedOptions, question]);
+  // useEffect(() => {
+  //   selectedOptions !== null &&
+  //     AttemptAnsUpdate(JSON.stringify(selectedOptions), question);
+  // }, [selectedOptions, question]);
 
   useEffect(() => {
     setSelectedOptions(
