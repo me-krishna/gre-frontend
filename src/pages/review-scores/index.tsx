@@ -168,7 +168,7 @@ const Exam = () => {
       );
       setQuestionData(nextSectionData[0]);
     } else {
-      setStep(5);
+      navigate("/");
     }
   };
 

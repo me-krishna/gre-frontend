@@ -11,11 +11,8 @@ const BlanksQuestion: FC<IBlanksQuestion> = ({
   CorrectAnsUpdate,
   AttemptAnsUpdate,
 }) => {
-  const [selectedOptions, setSelectedOptions] = useState<number[][]>(
-    question.attempt_ans !== "" && question.attempt_ans !== null
-      ? JSON.parse(question.attempt_ans)
-      : []
-  );
+  console.log("BlanksQuestion", question);
+  const [selectedOptions, setSelectedOptions] = useState<number[][]>([]);
 
   const handleOptionChange = (blankNo: number, optionNo: number) => {
     setSelectedOptions((prevOptions: number[][]) => {
@@ -28,16 +25,24 @@ const BlanksQuestion: FC<IBlanksQuestion> = ({
   useEffect(() => {
     selectedOptions !== null &&
       AttemptAnsUpdate(JSON.stringify(selectedOptions), question);
-  }, [selectedOptions]);
+  }, [selectedOptions, question]);
 
   useEffect(() => {
+    setSelectedOptions(
+      question.attempt_ans !== "" &&
+        question.attempt_ans !== null &&
+        question.attempt_ans !== "[]"
+        ? JSON.parse(question.attempt_ans)
+        : []
+    );
     if (question.correct_ans === "") {
       CorrectAnsUpdate(
         JSON.stringify(question.blanks.map((item: any) => item.answer)),
         question
       );
     }
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [question]);
 
   return (
     <div className="flex justify-center text-[#303030]">

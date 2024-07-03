@@ -16,6 +16,7 @@ interface Props {
   isThisQuestion: boolean;
   question_marked: number;
   currentSectionQuestionNumber: number;
+  questionTopicId: number;
 }
 
 const ExamHeader: React.FC<Props> = ({
@@ -25,6 +26,7 @@ const ExamHeader: React.FC<Props> = ({
   isThisQuestion,
   question_marked,
   currentSectionQuestionNumber,
+  questionTopicId,
 }) => {
   const [showBtns, setShowBtns] = useState<number[]>([9]);
   const examButtons = [
@@ -202,8 +204,12 @@ const ExamHeader: React.FC<Props> = ({
         : step === 9
         ? []
         : [7, 10];
-    setShowBtns(buttons);
-  }, [isThisQuestion, step]);
+    setShowBtns(
+      questionTopicId === 1
+        ? buttons.filter((res: number) => res !== 4)
+        : buttons
+    );
+  }, [isThisQuestion, step, questionTopicId]);
 
   const activatedBtns = examButtons.filter((btn) => showBtns.includes(btn.id));
 

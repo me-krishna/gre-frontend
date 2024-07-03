@@ -259,7 +259,7 @@ const Exam = () => {
       setQuestionData((prev: any) => ({
         ...prev,
         marked: questionData.marked === 1 ? 0 : 1,
-      }))
+      }));
     } else if (name === "Review") {
       setIsThisAQuestion(false);
       setStep(6);
@@ -336,6 +336,8 @@ const Exam = () => {
     setQuestionData(allQuestions[index]);
   };
 
+  console.log("allQuestions", questionData);
+
   return (
     <div className="flex justify-center h-screen w-screen bg-[#00000057]">
       <div className="bg-white w-full h-full">
@@ -346,6 +348,7 @@ const Exam = () => {
           onClick={actionBtnClick}
           question_marked={questionData?.marked}
           currentSectionQuestionNumber={currentQuestionNumberOnSection()}
+          questionTopicId={questionData?.topic_id}
         />
         <>
           {parseInt(currentSection?.duration) > 0 && (
@@ -379,7 +382,13 @@ const Exam = () => {
                   )}
                   {step === 4 && <ExitSection />}
                   {step === 5 && <QuitAndSave />}
-                  {step === 6 && <ReviewScreen questionData={questionData}  currentQuestion={currentQuestion}  goToQuestion={goToQuestion} />}
+                  {step === 6 && (
+                    <ReviewScreen
+                      questionData={questionData}
+                      currentQuestion={currentQuestion}
+                      goToQuestion={goToQuestion}
+                    />
+                  )}
                   {step === 7 && <EndOfTest />}
                   {step === 8 && <ReportYourScore />}
                   {step === 9 && <PracticeTestResults />}
