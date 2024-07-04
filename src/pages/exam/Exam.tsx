@@ -303,7 +303,7 @@ const Exam = () => {
         last_question: nextSectionData[0].qid,
       });
     } else {
-      setStep(5);
+      setStep(7);
     }
   };
 
@@ -325,8 +325,8 @@ const Exam = () => {
       setStep(7);
       setIsThisAQuestion(false);
     } else {
-      // setStep(10);
-      // setIsThisAQuestion(false);
+      setStep(10);
+      setIsThisAQuestion(false);
     }
   };
 
@@ -335,7 +335,6 @@ const Exam = () => {
     setCurrentQuestion(index);
     setQuestionData(allQuestions[index]);
   };
-
 
   return (
     <div className="flex justify-center h-screen w-screen bg-[#00000057]">
