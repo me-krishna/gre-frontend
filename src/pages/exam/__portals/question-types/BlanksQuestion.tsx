@@ -12,40 +12,38 @@ const BlanksQuestion: FC<IBlanksQuestion> = ({
   AttemptAnsUpdate,
 }) => {
   const [selectedOptions, setSelectedOptions] = useState<number[][]>([]);
-
   const handleOptionChange = (blankNo: number, optionNo: number) => {
-    setSelectedOptions((prevOptions: number[][]) => {
+    setSelectedOptions((prevOptions) => {
       const newOptions = [...(prevOptions ?? [])];
-      question?.blanks[blankNo - 1].answer?.length > 1
-        ? (newOptions[blankNo - 1] = newOptions[blankNo - 1]?.includes(optionNo)
-            ? newOptions[blankNo - 1]?.filter((option) => option !== optionNo)
-            : [...(newOptions[blankNo - 1] ?? []), optionNo])
-        : (newOptions[blankNo - 1] = [optionNo]);
+      const blankIndex = blankNo - 1;
+      const currentOptions = newOptions[blankIndex] ?? [];
+      const isOptionSelected = currentOptions.includes(optionNo);
+      const maxOptionsLength = question?.blanks[blankIndex].answer?.length || 0;
 
-      selectedOptions !== null &&
-        AttemptAnsUpdate(JSON.stringify(newOptions), question);
+      if (!maxOptionsLength || maxOptionsLength <= 1) {
+        newOptions[blankIndex] = [optionNo];
+      } else if (isOptionSelected) {
+        newOptions[blankIndex] = currentOptions.filter(
+          (option) => option !== optionNo
+        );
+      } else if (currentOptions.length < maxOptionsLength) {
+        newOptions[blankIndex] = [...currentOptions, optionNo];
+      } else {
+        newOptions[blankIndex] = [...currentOptions.slice(0,-1), optionNo];
+      }
+
+      AttemptAnsUpdate(JSON.stringify(newOptions), question);
       return newOptions;
     });
   };
 
-  // useEffect(() => {
-  //   selectedOptions !== null &&
-  //     AttemptAnsUpdate(JSON.stringify(selectedOptions), question);
-  // }, [selectedOptions, question]);
-
   useEffect(() => {
-    setSelectedOptions(
-      question.attempt_ans !== "" &&
-        question.attempt_ans !== null &&
-        question.attempt_ans !== "[]"
-        ? JSON.parse(question.attempt_ans)
-        : []
-    );
-    if (question.correct_ans === "") {
-      CorrectAnsUpdate(
-        JSON.stringify(question.blanks.map((item: any) => item.answer)),
-        question
-      );
+    const hasAttemptAns = question.attempt_ans && question.attempt_ans !== "[]";
+    setSelectedOptions(hasAttemptAns ? JSON.parse(question.attempt_ans) : []);
+
+    if (!question.correct_ans) {
+      const correctAnswers = question.blanks.map(({ answer }: any) => answer);
+      CorrectAnsUpdate(JSON.stringify(correctAnswers), question);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [question]);
@@ -76,7 +74,7 @@ const BlanksQuestion: FC<IBlanksQuestion> = ({
                 >
                   <span
                     onClick={() => handleOptionChange(idx + 1, idxi + 1)}
-                    className={`cursor-pointer px-3 min-w-[100px] w-full max-w-[200px]`}
+                    className={`cursor-pointer px-3 min-w-[100px] w-full max-w-[300px]`}
                     dangerouslySetInnerHTML={{ __html: option }}
                   ></span>
                 </div>

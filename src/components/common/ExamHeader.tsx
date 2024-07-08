@@ -52,7 +52,7 @@ const ExamHeader: React.FC<Props> = ({
     },
     {
       id: 3,
-      name: "Calculator ",
+      name: "Calculator",
       icon: <FaCalculator size={20} width={20} />,
       show: true,
       style: {
@@ -204,11 +204,24 @@ const ExamHeader: React.FC<Props> = ({
         : step === 9
         ? []
         : [7, 10];
-    setShowBtns(
+
+    const updatedButtons =
       questionTopicId === 1
         ? buttons.filter((res: number) => res !== 4)
-        : buttons
-    );
+        : questionTopicId === 3
+        ? (() => {
+            const index = buttons.indexOf(2);
+            if (index !== -1) {
+              // Copy to avoid mutating the original array
+              const newButtons = [...buttons];
+              newButtons.splice(index + 1, 0, 3); // Insert 3 after 2
+              return newButtons;
+            }
+            return buttons;
+          })()
+        : buttons;
+
+    setShowBtns(updatedButtons);
   }, [isThisQuestion, step, questionTopicId]);
 
   const activatedBtns = examButtons.filter((btn) => showBtns.includes(btn.id));

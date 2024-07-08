@@ -18,6 +18,9 @@ import ReportYourScore from "./__portals/ReportYourScore";
 import PracticeTestResults from "./__portals/PracticeTestResults";
 import { error } from "../../lib/notify";
 import SectionFineshed from "./__portals/SectionFineshed";
+import Draggable, { DraggableCore } from "react-draggable";
+import { FaTimesCircle } from "react-icons/fa";
+import Calculator from "../../components/common/Calculator";
 
 const Exam = () => {
   const navigate = useNavigate();
@@ -31,7 +34,7 @@ const Exam = () => {
   const [allQuestions, setAllQuestions] = useState<any[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
   const [pargraphsData, setPargraphsData] = useState<string>("");
-
+  const [isShowCalculator, setIsShowCalculator] = useState<boolean>(false);
   const getExamSectionDetails = async () => {
     try {
       const res = await useApi.post(`/getSectionFullDetails`, {
@@ -284,6 +287,9 @@ const Exam = () => {
     } else if (name === "Go to Question") {
       setIsThisAQuestion(true);
       setStep(1);
+    } else if (name === "Calculator") {
+      console.log("calculator");
+      setIsShowCalculator(!isShowCalculator);
     }
   };
 
@@ -466,6 +472,25 @@ const Exam = () => {
                         </div>
                       </div>
                     )}
+                  {isShowCalculator && (
+                    <Draggable>
+                      <div className="p-2 absolute top-[9%] right-3 bg-slate-100 rounded-md shadow">
+                        <div className="relative">
+                          <div className="flex justify-between items-center p-2">
+                            <h2>Calculator</h2>
+                            <FaTimesCircle
+                              className="cursor-pointer"
+                              onClick={() => setIsShowCalculator(false)}
+                              size={20}
+                            />
+                          </div>
+                          <div>
+                            <Calculator />
+                          </div>
+                        </div>
+                      </div>
+                    </Draggable>
+                  )}
                 </div>
               )}
             </div>

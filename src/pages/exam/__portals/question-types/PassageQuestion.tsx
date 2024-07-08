@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { v4 } from "uuid";
 
 interface PassageQuestionProps {
@@ -12,35 +12,41 @@ const PassageQuestion: FC<PassageQuestionProps> = ({
   CorrectAnsUpdate,
   AttemptAnsUpdate,
 }) => {
-  const [selectedOptions, setSelectedOptions] = useState<number[]>(
-    question.attempt_ans !== "" && question.attempt_ans !== null
-      ? JSON.parse(question.attempt_ans)
-      : []
-  );
+  const [selectedOptions, setSelectedOptions] = useState<number[]>([]);
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const optionValue = Number(event.target.value);
-    if (question.non_blanks.answer.length > 1) {
-      setSelectedOptions((prevOptions) =>
-        prevOptions.includes(optionValue)
-          ? prevOptions.filter((option) => option !== optionValue)
-          : [...prevOptions, optionValue]
-      );
-    } else {
-      setSelectedOptions([optionValue]);
-    }
-  };
+    setSelectedOptions((prevOptions) => {
+      let newOptions = [...prevOptions];
+      const checkMinLength = question.non_blanks.answer.length > 1;
+      const currentOptions = newOptions ?? [];
+      const maxOptionsLength = question.non_blanks.answer?.length || 0;
 
-  useEffect(() => {
-    selectedOptions !== null &&
-      AttemptAnsUpdate(JSON.stringify(selectedOptions), question);
-  }, [selectedOptions]);
+      if (checkMinLength) {
+        if (prevOptions.includes(optionValue)) {
+          newOptions = currentOptions.filter(
+            (option) => option !== optionValue
+          );
+        } else {
+          newOptions =
+            currentOptions.length < maxOptionsLength
+              ? [...currentOptions, optionValue]
+              : [...currentOptions.slice(0, -1), optionValue];
+        }
+      } else {
+        newOptions = [optionValue];
+      }
+      AttemptAnsUpdate(JSON.stringify(newOptions), question);
+      return newOptions;
+    });
+  };
 
   useEffect(() => {
     if (question.correct_ans === "") {
       CorrectAnsUpdate(JSON.stringify(question.non_blanks.answer), question);
     }
-  }, []);
+    setSelectedOptions(JSON.parse(question.attempt_ans || "[]"));
+  }, [question]);
 
   return (
     <div>
