@@ -333,6 +333,18 @@ const Exam = () => {
     } else {
       setStep(10);
       setIsThisAQuestion(false);
+      const currentSectionw = questionData.question_section_no;
+      const currentSecList = allQuestions.filter((item: any) => {
+        return item.question_section_no === currentSectionw;
+      });
+
+      setCurrentQuestion(
+        allQuestions.findIndex(
+          (item: any) =>
+            item.qid === currentSecList[currentSecList.length - 1].qid
+        )
+      );
+      setQuestionData(currentSecList[currentSecList.length - 1]);
     }
   };
 
@@ -354,7 +366,6 @@ const Exam = () => {
           currentSectionQuestionNumber={currentQuestionNumberOnSection()}
           questionTopicId={questionData?.topic_id}
         />
-         {/* sectionTime={parseInt(currentSection?.duration) * 60} */}
         <>
           {parseInt(currentSection?.duration) > 0 && (
             <SectionHeading
@@ -366,7 +377,7 @@ const Exam = () => {
                   (res) => res?.section_id === questionData?.section_id
                 ).length
               }
-              sectionTime={11}
+              sectionTime={parseInt(currentSection?.duration) * 60}
               step={step}
               sectionTimerExpired={currentSectionTimeExpires}
             />
