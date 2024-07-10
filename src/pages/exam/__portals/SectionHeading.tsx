@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CiCircleMinus } from "react-icons/ci";
 import { useTimer } from "react-timer-hook";
 import { IoTimeOutline } from "react-icons/io5";
@@ -19,11 +19,30 @@ const SectionHeading = ({
   step: number;
   sectionTimerExpired: () => void;
 }) => {
+  // const [showTimer, setShowTimer] = useState(true);
+  // const time = new Date();
+  // time.setSeconds(time.getSeconds() + sectionTime);
+  // const { seconds, minutes, hours } = useTimer({
+  //   expiryTimestamp: time,
+  //   onExpire: () => sectionTimerExpired(),
+  // });
+
   const [showTimer, setShowTimer] = useState(true);
-  const time = new Date();
-  time.setSeconds(time.getSeconds() + sectionTime);
-  const { seconds, minutes, hours } = useTimer({
-    expiryTimestamp: time,
+  const [expiryTimestamp, setExpiryTimestamp] = useState(() => {
+    const time = new Date();
+    time.setSeconds(time.getSeconds() + sectionTime);
+    return time;
+  });
+
+  useEffect(() => {
+    const time = new Date();
+    time.setSeconds(time.getSeconds() + sectionTime);
+    setExpiryTimestamp(time);
+    restart(time);
+  }, [sectionTime, currentSection]); // Add currentSection to the dependency array
+  
+  const { seconds, minutes, hours ,restart } = useTimer({
+    expiryTimestamp,
     onExpire: () => sectionTimerExpired(),
   });
 

@@ -354,6 +354,7 @@ const Exam = () => {
           currentSectionQuestionNumber={currentQuestionNumberOnSection()}
           questionTopicId={questionData?.topic_id}
         />
+         {/* sectionTime={parseInt(currentSection?.duration) * 60} */}
         <>
           {parseInt(currentSection?.duration) > 0 && (
             <SectionHeading
@@ -365,7 +366,7 @@ const Exam = () => {
                   (res) => res?.section_id === questionData?.section_id
                 ).length
               }
-              sectionTime={parseInt(currentSection?.duration) * 60}
+              sectionTime={11}
               step={step}
               sectionTimerExpired={currentSectionTimeExpires}
             />
