@@ -1,7 +1,7 @@
 import axios from "axios";
-import { error } from "./notify";
+// import { error } from "./notify";
 
-const pathName = window.location.pathname;
+// const pathName = window.location.pathname;
 const useApi = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
   headers: {

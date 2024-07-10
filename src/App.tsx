@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import PriavateRoute from "./PrivateRoute";
 import Login from "./pages/auth/login";
+import ForgotPassword from "./pages/auth/forgot-password";
 
 const Dashboard = lazy(() => import("./pages/dashboard"));
 const Exam = lazy(() => import("./pages/exam/Exam"));
@@ -17,6 +18,7 @@ function App() {
           <Route path="/review-score/:exam_section_id" element={<ReviewScore />} />
         </Route>
         <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
     </Suspense>
   );

@@ -150,7 +150,7 @@ const Login = () => {
                 </div>
                 <div className="flex items-center justify-between">
                   <a
-                    href="#"
+                    href={`${process.env.PUBLIC_URL}/forgot-password`}
                     className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
                   >
                     Forgot password?
