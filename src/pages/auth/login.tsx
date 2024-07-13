@@ -7,6 +7,7 @@ import { error } from "../../lib/notify";
 import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 import { encryptData } from "../../lib/crypt";
+import { toast } from "react-toastify";
 
 const schema = z.object({
   email: z.string().email(),
@@ -31,30 +32,38 @@ const Login = () => {
 
   const onLogin = async (e: TSchema) => {
     try {
+      // Attempt to log in by sending a POST request to the /login endpoint
       const res = await useApi.post("/login", {
-        email: e.email,
-        password: e.password,
-        type: "student",
+        email: e.email, // User's email
+        password: e.password, // User's password
+        type: "student", // User type
       });
-      const { data, status } = res;
+      const { data, status } = res; // Destructure response to get data and status
       if (status === 200) {
-        localStorage.setItem(process.env.REACT_APP_TOKEN_KEY, data.data.token);
+        // If login is successful (status 200)
+        localStorage.setItem(process.env.REACT_APP_TOKEN_KEY, data.data.token); // Store token in localStorage
         localStorage.setItem(
           process.env.REACT_APP_USER_KEY,
-          encryptData(data.data.user)
+          encryptData(data.data.user) // Encrypt and store user data in localStorage
         );
-        navigate("/");
+        navigate("/"); // Navigate to the homepage
       } else {
-        error(data.data.message);
+        // If login is unsuccessful
+        error(data.data.message); // Display error message
       }
     } catch (err) {
-      error(
-        err instanceof AxiosError
-          ? err.response?.data.message
-          : err instanceof Error
-          ? err.message
-          : "An error occurred"
-      );
+      if (err instanceof AxiosError) {
+        let errorMessage = err.response?.data.message; // Original error message from the API
+        if (errorMessage === "Account not found.") {
+          errorMessage =
+            "The account you are trying to access does not exist. Please check your credentials and try again.";
+        }
+        error(errorMessage); // Log or display the user-friendly error message
+      } else if (err instanceof Error) {
+        error(err.message); // If error is a generic Error, display the error message
+      } else {
+        error("An unexpected error occurred. Please try again later."); // Default error message
+      }
     }
   };
 

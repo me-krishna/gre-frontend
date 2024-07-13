@@ -1,7 +1,6 @@
 import axios from "axios";
-// import { error } from "./notify";
+import { error } from "./notify"; // Re-enable custom notification system
 
-// const pathName = window.location.pathname;
 const useApi = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
   headers: {
@@ -10,33 +9,34 @@ const useApi = axios.create({
 });
 
 useApi.interceptors.request.use((config) => {
+  console.log(config);
   const token = localStorage.getItem(process.env.REACT_APP_TOKEN_KEY);
+
   if (token) {
     config.headers['Authorization'] = `Bearer ${token}`;
   } else {
-    // pathName !== "/login" && error("Token expired, please login again.");
-    delete config.headers.Authorization;
+    console.log(config);
+    if (config.url !== "/login") {
+      error("Token not found or expired, please login again.");
+      delete config.headers.Authorization;
+    }
   }
   return config;
 });
 
 useApi.interceptors.response.use((response) => {
-  
-  if (response.status === 401) {
-    alert("You are not authorized");
-  }
   return response;
 }, (error) => {
-  if (error.response && error.response.data) {
-    if (error.response.status === 401) {
+  if (error.response) {
+    if(error.response.status === 401) {
       localStorage.clear();
-      // error("Session expired. Please login again.");
-      window.location.href = process.env.PUBLIC_URL+"/login";
-    } else {
-      return Promise.reject(error.response.data);
+      window.history.pushState({}, '', process.env.PUBLIC_URL + "/login");
+      window.location.reload();
     }
+  } else {
+    // error("Network error or server is unreachable.");
   }
-  return Promise.reject(error.message);
+  return Promise.reject(error);
 });
 
 export default useApi;
